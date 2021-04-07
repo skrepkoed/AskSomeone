@@ -11,6 +11,7 @@ RSpec.describe Question, type: :model do
 
   describe 'associations' do
   	subject { FactoryBot.build(:question) }
-  	it { should have_many(:answers) }
+  	
+    it { should have_many(:answers) }
   end
 end
