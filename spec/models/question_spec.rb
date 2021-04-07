@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Question, type: :model do
+  
+  describe 'table_columns' do
+    it {should have_db_column :body}
+    it {should have_db_column :title}
+    it {should have_db_column :user_id}
+  end
+
   describe 'validations' do
   	subject { FactoryBot.build(:question) }
 
