@@ -3,7 +3,6 @@ class CreateAnswers < ActiveRecord::Migration[6.0]
     create_table :answers do |t|
       t.references :question, null: false
       t.text :body, null: false
-      t.references :user, null: false
 
       t.timestamps
     end
