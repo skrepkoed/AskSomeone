@@ -11,7 +11,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to render_template :new
     end
 
-    it 'has new question variable' do
+    it 'has new question instance' do
       expect(assigns(:question)).to be_a_new(Question)
     end
   end
