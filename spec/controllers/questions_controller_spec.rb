@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-
-  let(:question){ create(:question) }
+  let(:question) { create(:question) }
 
   describe 'GET #new' do
     before { get :new }
-    
+
     it 'renders new view' do
       expect(response).to render_template :new
     end
@@ -19,24 +18,25 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     context 'with valid attrubutes' do
       it 'saves new question in DB' do
-        expect{ post :create, params:{ question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
 
-      it 'redirect to show view' do
-        post :create, params:{question: attributes_for(:question)}
-        expect(response).to redirect_to assigns(:question)
+      it 'render to show view' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(response).to render_template :show
       end
     end
     context 'with invalid attrubutes' do
-      it 'doesn`t save question if attrubutes are invalid' do
-        expect{post :create, params:{ question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+      it 'doesn`t save question ' do
+        expect do
+          post :create, params: { question: attributes_for(:question, :invalid) }
+        end.to_not change(Question, :count)
       end
 
-      it 'renders :new if attrubutes are invalid' do
-        post :create, params:{ question: attributes_for(:question, :invalid) }
+      it 'renders :new' do
+        post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
       end
     end
   end
-
 end

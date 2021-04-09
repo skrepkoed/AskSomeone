@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(params_question)
     if @question.save
-      redirect_to @question
+      render :show
     else
       render :new
     end
