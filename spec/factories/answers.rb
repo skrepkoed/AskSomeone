@@ -4,6 +4,10 @@ FactoryBot.define do
     body { 'MyText' }
   end
 
+  trait :for_create do
+    body {'MyText'}
+  end
+
   trait :invalid do
     body {''}
   end
