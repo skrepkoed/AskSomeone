@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :answer do
     question
-    body { 'MyText' }
+    body { 'My Answer' }
   end
 
   trait :for_create do
-    body {'MyText'}
+    body {'My Answer'}
   end
 
   trait :invalid do

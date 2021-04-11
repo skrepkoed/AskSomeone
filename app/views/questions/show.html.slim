@@ -7,11 +7,13 @@ h2
 h2
   = @question.body
 
-= unless @question.answers.empty?
+- unless @answers.empty?
 	ul
-		= @question.answers.each do |answer|
-			li
+		= @answers.each do |answer|
+			li.answer
 				= answer.body
+- else
+	p Nobody has answered this question yet
 
 
 p 

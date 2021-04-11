@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :question do
     title { 'MyTitle' }
-    body { 'MyText' }
+    body { 'My Question' }
 
     trait :invalid do
       title {''}
@@ -10,7 +10,7 @@ FactoryBot.define do
 
     trait :with_answer do
       title { 'MyTitle' }
-      body { 'MyText' }
+      body { 'My Question' }
       after :create do |question|
         create :answer, :for_create, question_id: question.id
       end
