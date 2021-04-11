@@ -21,7 +21,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'saves answers in DB' do
         expect do
           post :create, params: { question_id: question.id, answer: attributes_for(:answer,:for_create) }
-        end.to change(Answer, :count).by(1)
+        end.to change(question.answers, :count).by(1)
       end
 
       it 'redirect to show view' do
@@ -31,11 +31,11 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid values' do
-      it 'saves answers in DB' do
+      it 'doesn`t saves answers in DB' do
         expect do
           post :create,
                params: { question_id: question.id, answer: attributes_for(:answer, :invalid) }
-        end.to_not change(Answer, :count)
+        end.to_not change(question.answers, :count)
       end
 
       it 'renders new view' do
