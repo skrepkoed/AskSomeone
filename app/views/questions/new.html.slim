@@ -1,1 +1,10 @@
 h1 New Question
+
+= form_with model: @question, local:true do |question|
+	p
+		= question.label :title
+		= question.text_field :title
+	p
+		= question.label :body
+		= question.text_area :body
+	= question.submit 'Ask question'

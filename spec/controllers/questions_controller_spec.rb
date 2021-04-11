@@ -23,7 +23,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'render to show view' do
         post :create, params: { question: attributes_for(:question) }
-        expect(response).to render_template :show
+        expect(response).to redirect_to assigns(:question)
       end
     end
     context 'with invalid attrubutes' do
@@ -37,6 +37,16 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
       end
+    end
+  end
+
+  describe 'GET #show'do
+    before { get :show, params:{id: question.id } }
+    it 'renders show view' do
+      expect(response).to render_template :show
+    end
+    it 'has question instance with requested id' do
+      expect(assigns(:question)).to eq(question)
     end
   end
 end
