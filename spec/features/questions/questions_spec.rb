@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 feature 'Someone can ask question', '
-  In order to get answer I`d like to
+  In order to get answer I`d like to go to the 
+  questions page click on Ask question and 
 ' do
     scenario 'ask a question' do
-      visit new_question_path
+      visit questions_path
+      click_on 'Ask question'
       fill_in 'Title', with: 'Question title'
       fill_in 'Body', with: 'Question body?'
       click_on 'Ask'
