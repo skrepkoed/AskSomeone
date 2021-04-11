@@ -49,4 +49,16 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq(question)
     end
   end
+
+  describe 'GET #index' do
+    let(:questions) { create_list(:question, 3) }
+    before { get :index }
+    it 'renders index view' do
+      expect(response).to render_template :index
+    end
+
+    it 'has array of all questions' do
+      expect(assigns(:questions)).to match_array(questions)
+    end
+  end
 end
