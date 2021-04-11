@@ -48,6 +48,24 @@ RSpec.describe QuestionsController, type: :controller do
     it 'has question instance with requested id' do
       expect(assigns(:question)).to eq(question)
     end
+    it 'has  new answer instance' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
+
+    it 'has new answer instance that belongs to current question' do
+      expect(assigns(:answer).question_id).to eq question.id
+    end
+
+    context 'question has been answered' do
+      before do 
+        create(:question, :with_answer)
+        get :show, params:{id: question.id}
+      end
+
+      it 'has array of answers' do
+        expect(assigns(:answers)).to match_array question.answers
+      end
+    end
   end
 
   describe 'GET #index' do

@@ -1,8 +1,23 @@
-h1 Question Show
+h1 Question
 
 p
-	= "Your question successfully created."
+	= flash[:notice]
 h2
 	= @question.title
 h2
   = @question.body
+
+= unless @question.answers.empty?
+	ul
+		= @question.answers.each do |answer|
+			li
+				= answer.body
+
+
+p 
+= form_with model: [@question, @answer], local: true do |answer|
+	p 
+		= answer.label :body
+		= answer.text_area :body
+	p 
+		= answer.submit 'Answer'

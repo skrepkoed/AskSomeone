@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(params_question)
     if @question.save
-      redirect_to @question
+      redirect_to @question, notice: "Your question successfully created."
     else
       render :new
     end
@@ -18,6 +18,8 @@ class QuestionsController < ApplicationController
 
   def show
     set_question
+    set_new_answer
+    @answers = @question.answers.all
   end
 
   private
@@ -28,5 +30,9 @@ class QuestionsController < ApplicationController
 
   def set_question
     @question ||= Question.find(params[:id])
+  end
+
+  def set_new_answer
+    @answer = @question.answers.new
   end
 end

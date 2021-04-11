@@ -7,9 +7,10 @@ class AnswersController < ApplicationController
     set_question
     @answer = @question.answers.new(params_answer)
     if @answer.save
-      render :show
+      redirect_to @answer.question, notice: 'Your answer was accepted'
     else
-      render :new
+      flash[:errors] = @answer.errors.full_messages
+      render 'questions/show'
     end
   end
 
