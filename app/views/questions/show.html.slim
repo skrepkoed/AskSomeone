@@ -10,13 +10,21 @@ p
   = @question.body
 br
 
+p
+	- if resource_authored_by_user?(@question)
+		= link_to 'Delete question', question_path(@question), method: :delete
+
 h2 Answers
 - unless @answers.empty?
 	ul
 		- @answers.each do |answer|
 			li.answer
 				= "Author: #{answer.author.email}" 
+				br
 				= answer.body
+				br
+				- if resource_authored_by_user?(answer)
+					= link_to 'Delete answer', question_answer_path(answer.question, answer), method: :delete
 - else
 	p Nobody has answered this question yet
 

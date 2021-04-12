@@ -9,6 +9,11 @@ FactoryBot.define do
       body {''}
     end
 
+    trait :for_create do
+      title { 'MyTitle' }
+      body { 'My Question' }
+    end
+
     trait :with_answer do
       title { 'MyTitle' }
       body { 'My Question' }

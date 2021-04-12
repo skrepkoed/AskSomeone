@@ -9,7 +9,7 @@ RSpec.describe Answer, type: :model do
   describe 'associations' do
     subject { build(:answer) }
 
-    it { should belong_to(:question).dependent(:destroy) }
+    it { should belong_to(:question) }
   end
 
   describe 'validations' do

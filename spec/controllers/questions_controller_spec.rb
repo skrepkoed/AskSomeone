@@ -89,4 +89,24 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:questions)).to match_array(questions)
     end
   end
+
+  describe 'DELETE #destroy' do
+    context 'question belongs to user' do 
+      let(:user){create(:user, :with_question)}
+      before{ login(user) }
+      it 'destroys question' do
+        expect {delete :destroy, params:{id:user.questions.first.id} }.to change(user.questions, :count).by(-1)
+      end
+    end
+
+    context 'question doesn`t belong to user' do
+      let(:user){ create(:user) }
+      let(:question){create(:question)}
+      before{ login(user) }
+
+      it 'doesn`t destroy question' do
+        expect {delete :destroy, params:{id:question.id} }.to_not change(user.questions, :count)
+      end
+    end
+  end
 end

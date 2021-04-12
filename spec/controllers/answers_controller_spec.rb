@@ -46,4 +46,28 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    context 'answer belongs to user' do 
+      let(:answer){create(:answer)}
+      let(:user){answer.author}
+      before{ login(user) }
+      
+      it 'destroys question' do
+        expect {delete :destroy, 
+          params:{question_id:answer.question.id, id:user.answers.first.id} }.to change(user.answers, :count).by(-1)
+      end
+    end
+
+    context 'question doesn`t belong to user' do
+      let(:user){ create(:user) }
+      let(:answer){create(:answer)}
+      before{ login(user) }
+
+      it 'doesn`t destroy question' do
+        expect {delete :destroy, 
+          params:{question_id:answer.question.id, id:answer.id} }.to_not change(user.answers, :count)
+      end
+    end
+  end
 end
