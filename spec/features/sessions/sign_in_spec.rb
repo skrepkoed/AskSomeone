@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-feature 'Someone can sign in and become registered user',%q{
+feature 'Someone can sign in and become registered user', '
   In order to ask questions as unauthenticateted user I`d like
   to be able to sign in
-}do
-  given(:user){create(:user)}
+' do
+  given(:user) { create(:user) }
   background { visit new_user_session_path }
-  scenario 'Registered user tries to sign in'do
+  scenario 'Registered user tries to sign in' do
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password
     click_on 'Log in'
-    
+
     expect(page).to have_content 'Signed in successfully.'
   end
 

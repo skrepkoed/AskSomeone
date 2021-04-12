@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:user){create(:user)}
+  let(:user) { create(:user) }
   let(:answer) { create(:answer) }
   let(:question) { create(:question) }
-  before {login(user)}
+  before { login(user) }
   describe 'GET #new' do
     before { get :new, params: { question_id: answer.question } }
 
@@ -22,7 +22,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid values' do
       it 'saves answers in DB' do
         expect do
-          post :create, params: { question_id: question.id, answer: attributes_for(:answer,:for_create) }
+          post :create, params: { question_id: question.id, answer: attributes_for(:answer, :for_create) }
         end.to change(question.answers, :count).by(1)
       end
 
@@ -48,25 +48,29 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    context 'answer belongs to user' do 
-      let(:answer){create(:answer)}
-      let(:user){answer.author}
-      before{ login(user) }
-      
+    context 'answer belongs to user' do
+      let(:answer) { create(:answer) }
+      let(:user) { answer.author }
+      before { login(user) }
+
       it 'destroys question' do
-        expect {delete :destroy, 
-          params:{question_id:answer.question.id, id:user.answers.first.id} }.to change(user.answers, :count).by(-1)
+        expect do
+          delete :destroy,
+                 params: { question_id: answer.question.id, id: user.answers.first.id }
+        end.to change(user.answers, :count).by(-1)
       end
     end
 
     context 'question doesn`t belong to user' do
-      let(:user){ create(:user) }
-      let(:answer){create(:answer)}
-      before{ login(user) }
+      let(:user) { create(:user) }
+      let(:answer) { create(:answer) }
+      before { login(user) }
 
       it 'doesn`t destroy question' do
-        expect {delete :destroy, 
-          params:{question_id:answer.question.id, id:answer.id} }.to_not change(user.answers, :count)
+        expect do
+          delete :destroy,
+                 params: { question_id: answer.question.id, id: answer.id }
+        end.to_not change(user.answers, :count)
       end
     end
   end

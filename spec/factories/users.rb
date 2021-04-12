@@ -4,14 +4,14 @@ FactoryBot.define do
   end
   factory :user do
     email
-    password {'1234567'}
-    password_confirmation {'1234567'}
+    password { '1234567' }
+    password_confirmation { '1234567' }
   end
 
   trait :with_question do
     email
-    password {'1234567'}
-    password_confirmation {'1234567'}
+    password { '1234567' }
+    password_confirmation { '1234567' }
     after :create do |user|
       create :question, :for_create, user_id: user.id
     end

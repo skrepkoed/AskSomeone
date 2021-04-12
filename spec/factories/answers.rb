@@ -6,10 +6,10 @@ FactoryBot.define do
   end
 
   trait :for_create do
-    body {'My Answer'}
+    body { 'My Answer' }
   end
 
   trait :invalid do
-    body {''}
+    body { '' }
   end
 end

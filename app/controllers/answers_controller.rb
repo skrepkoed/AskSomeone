@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   def new
     set_question
-    @answer = Answer.new()
+    @answer = Answer.new
   end
 
   def create
@@ -26,7 +26,7 @@ class AnswersController < ApplicationController
     set_answer
     if resource_authored_by_user?(@answer)
       Answer.destroy(@answer.id)
-      redirect_to question_path(@question), notice:'Your answer has been deleted'
+      redirect_to question_path(@question), notice: 'Your answer has been deleted'
     else
       redirect_to question_path(@question), notice: 'You must be author to delete'
     end

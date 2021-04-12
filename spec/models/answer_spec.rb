@@ -10,6 +10,7 @@ RSpec.describe Answer, type: :model do
     subject { build(:answer) }
 
     it { should belong_to(:question) }
+    it { should belong_to(:author).class_name('User') }
   end
 
   describe 'validations' do

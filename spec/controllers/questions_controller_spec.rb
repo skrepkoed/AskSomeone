@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:user){create(:user)}
-  before{login(user)}
-  
+  let(:user) { create(:user) }
+  before { login(user) }
+
   describe 'GET #new' do
     before { get :new }
 
@@ -45,9 +45,9 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #show'do
+  describe 'GET #show' do
     let(:question) { create(:question) }
-    before { get :show, params:{id: question.id } }
+    before { get :show, params: { id: question.id } }
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -67,9 +67,9 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'question has been answered' do
-      before do 
+      before do
         create(:question, :with_answer)
-        get :show, params:{id: question.id}
+        get :show, params: { id: question.id }
       end
 
       it 'has array of answers' do
@@ -91,21 +91,21 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    context 'question belongs to user' do 
-      let(:user){create(:user, :with_question)}
-      before{ login(user) }
+    context 'question belongs to user' do
+      let(:user) { create(:user, :with_question) }
+      before { login(user) }
       it 'destroys question' do
-        expect {delete :destroy, params:{id:user.questions.first.id} }.to change(user.questions, :count).by(-1)
+        expect { delete :destroy, params: { id: user.questions.first.id } }.to change(user.questions, :count).by(-1)
       end
     end
 
     context 'question doesn`t belong to user' do
-      let(:user){ create(:user) }
-      let(:question){create(:question)}
-      before{ login(user) }
+      let(:user) { create(:user) }
+      let(:question) { create(:question) }
+      before { login(user) }
 
       it 'doesn`t destroy question' do
-        expect {delete :destroy, params:{id:question.id} }.to_not change(user.questions, :count)
+        expect { delete :destroy, params: { id: question.id } }.to_not change(user.questions, :count)
       end
     end
   end

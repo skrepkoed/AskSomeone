@@ -5,8 +5,8 @@ FactoryBot.define do
     body { 'My Question' }
 
     trait :invalid do
-      title {''}
-      body {''}
+      title { '' }
+      body { '' }
     end
 
     trait :for_create do
