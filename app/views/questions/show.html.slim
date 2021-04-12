@@ -4,22 +4,29 @@ p
 	= flash[:notice]
 h2
 	= @question.title
-h2
+p  
+	= "Author: #{@question.author.email}"
+p
   = @question.body
+br
 
+h2 Answers
 - unless @answers.empty?
 	ul
-		= @answers.each do |answer|
+		- @answers.each do |answer|
 			li.answer
+				= "Author: #{answer.author.email}" 
 				= answer.body
 - else
 	p Nobody has answered this question yet
 
-
-p 
-= form_with model: [@question, @answer], local: true do |answer|
+- if current_user
 	p 
-		= answer.label :body
-		= answer.text_area :body
-	p 
-		= answer.submit 'Answer'
+	= form_with model: [@question, @answer], local: true do |answer|
+		p 
+			= answer.label :body
+			= answer.text_area :body
+		p 
+			= answer.submit 'Answer'
+- else
+	p You need to be signed in to answer questions

@@ -1,10 +1,11 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, except: %i(index show)
   def new
-    @question = Question.new
+    @question = current_user.questions.new
   end
 
   def create
-    @question = Question.new(params_question)
+    @question = current_user.questions.new(params_question)
     if @question.save
       redirect_to @question, notice: "Your question successfully created."
     else
@@ -18,7 +19,7 @@ class QuestionsController < ApplicationController
 
   def show
     set_question
-    set_new_answer
+    set_new_answer if current_user
     @answers = @question.answers.all
   end
 
@@ -33,6 +34,6 @@ class QuestionsController < ApplicationController
   end
 
   def set_new_answer
-    @answer = @question.answers.new
+    @answer = Answer.new(question_id:@question.id, user_id:current_user.id)
   end
 end

@@ -10,6 +10,7 @@ RSpec.describe Question, type: :model do
     subject { build(:question) }
 
     it { should have_many(:answers) }
+    it { should belong_to(:author).class_name('User') }
   end
 
   describe 'validations' do

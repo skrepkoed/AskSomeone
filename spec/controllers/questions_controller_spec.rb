@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
-
+  let(:user){create(:user)}
+  before{login(user)}
+  
   describe 'GET #new' do
     before { get :new }
 
@@ -13,12 +14,16 @@ RSpec.describe QuestionsController, type: :controller do
     it 'has new question instance' do
       expect(assigns(:question)).to be_a_new(Question)
     end
+
+    it 'has current user instance' do
+      expect(controller.current_user).to eq user
+    end
   end
 
   describe 'POST #create' do
     context 'with valid attrubutes' do
       it 'saves new question in DB' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
       end
 
       it 'render to show view' do
@@ -30,7 +35,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'doesn`t save question ' do
         expect do
           post :create, params: { question: attributes_for(:question, :invalid) }
-        end.to_not change(Question, :count)
+        end.to_not change(user.questions, :count)
       end
 
       it 'renders :new' do
@@ -41,6 +46,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show'do
+    let(:question) { create(:question) }
     before { get :show, params:{id: question.id } }
     it 'renders show view' do
       expect(response).to render_template :show
@@ -54,6 +60,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'has new answer instance that belongs to current question' do
       expect(assigns(:answer).question_id).to eq question.id
+    end
+
+    it 'has new answer instance that belongs to current question' do
+      expect(assigns(:answer).author.id).to eq controller.current_user.id
     end
 
     context 'question has been answered' do
