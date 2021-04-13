@@ -1,14 +1,15 @@
 FactoryBot.define do
   factory :answer do
     question
-    body { 'MyText' }
+    association :author, factory: :user
+    body { 'My Answer' }
   end
 
   trait :for_create do
-    body {'MyText'}
+    body { 'My Answer' }
   end
 
   trait :invalid do
-    body {''}
+    body { '' }
   end
 end

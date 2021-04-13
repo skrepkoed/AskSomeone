@@ -1,15 +1,29 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_question
   def new
     @answer = Answer.new
   end
 
   def create
-    set_question
     @answer = @question.answers.new(params_answer)
+    @answer.user_id = current_user.id
     if @answer.save
-      render :show
+      redirect_to @answer.question, notice: 'Your answer was accepted'
     else
-      render :new
+      @answers = @question.answers.all
+      flash[:errors] = @answer.errors.full_messages
+      render 'questions/show'
+    end
+  end
+
+  def destroy
+    set_answer
+    if current_user.author?(@answer)
+      @answer.destroy
+      redirect_to question_path(@question), notice: 'Your answer has been deleted'
+    else
+      redirect_to question_path(@question), notice: 'You must be author to delete'
     end
   end
 
@@ -17,6 +31,10 @@ class AnswersController < ApplicationController
 
   def params_answer
     params.require(:answer).permit(:body)
+  end
+
+  def set_answer
+    @answer ||= Answer.find(params[:id])
   end
 
   def set_question

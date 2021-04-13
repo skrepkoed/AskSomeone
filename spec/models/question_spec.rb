@@ -9,7 +9,8 @@ RSpec.describe Question, type: :model do
   describe 'associations' do
     subject { build(:question) }
 
-    it { should have_many(:answers) }
+    it { should have_many(:answers).dependent(:destroy) }
+    it { should belong_to(:author).class_name('User') }
   end
 
   describe 'validations' do
