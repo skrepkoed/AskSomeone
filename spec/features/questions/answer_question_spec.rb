@@ -5,8 +5,10 @@ feature 'Authenticated user can answer the question at question`s show page', '
   I`d like to go to question`s show page and if
 ' do
   describe 'User is authenticated' do
+    
     given(:user) { create(:user) }
     given(:question) { create(:question) }
+    
     background do
       sign_in(user)
       visit question_path(question)
@@ -27,6 +29,7 @@ feature 'Authenticated user can answer the question at question`s show page', '
   end
 
   describe 'User isn`t authenticated' do
+    
     given(:question) { create(:question) }
 
     scenario 'can`t answer question' do

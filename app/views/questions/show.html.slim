@@ -1,17 +1,14 @@
 h1 Question
 
-p
-	= flash[:notice]
 h2
 	= @question.title
 p  
 	= "Author: #{@question.author.email}"
 p
   = @question.body
-br
 
 p
-	- if resource_authored_by_user?(@question)
+	- if current_user && current_user.author?(@question)
 		= link_to 'Delete question', question_path(@question), method: :delete
 
 h2 Answers
@@ -23,7 +20,7 @@ h2 Answers
 				br
 				= answer.body
 				br
-				- if resource_authored_by_user?(answer)
+				- if current_user && current_user.author?(answer)
 					= link_to 'Delete answer', question_answer_path(answer.question, answer), method: :delete
 - else
 	p Nobody has answered this question yet

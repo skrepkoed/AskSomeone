@@ -1,8 +1,6 @@
 class QuestionsController < ApplicationController
-  include ApplicationHelper
-  helper_method :resource_authored_by_user?
-
   before_action :authenticate_user!, except: %i[index show]
+  before_action :set_question, only: %i[show destroy]
   def new
     @question = current_user.questions.new
   end
@@ -12,6 +10,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
+      flash[:errors] = @question.errors.full_messages
       render :new
     end
   end
@@ -21,18 +20,16 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    set_question
     set_new_answer if current_user
     @answers = @question.answers.all
   end
 
   def destroy
-    set_question
-    if resource_authored_by_user?(@question)
-      Question.destroy(@question.id)
+    if current_user.author?(@question)
+      @question.destroy
       redirect_to questions_path, notice: 'Your question has been deleted'
     else
-      redirect_to question_path(@question), notice: 'You must be author to delete'
+      render :show, notice: 'You must be author to delete'
     end
   end
 

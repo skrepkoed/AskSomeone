@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  
   let(:user) { create(:user) }
+  
   before { login(user) }
 
   describe 'GET #new' do
+    
     before { get :new }
 
     it 'renders new view' do
@@ -21,7 +24,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    
     context 'with valid attrubutes' do
+      
       it 'saves new question in DB' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
       end
@@ -31,11 +36,13 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to redirect_to assigns(:question)
       end
     end
+    
     context 'with invalid attrubutes' do
+      
       it 'doesn`t save question ' do
         expect do
           post :create, params: { question: attributes_for(:question, :invalid) }
-        end.to_not change(user.questions, :count)
+        end.to_not change(Question, :count)
       end
 
       it 'renders :new' do
@@ -46,14 +53,19 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
+    
     let(:question) { create(:question) }
+    
     before { get :show, params: { id: question.id } }
+    
     it 'renders show view' do
       expect(response).to render_template :show
     end
+    
     it 'has question instance with requested id' do
       expect(assigns(:question)).to eq(question)
     end
+    
     it 'has  new answer instance' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
@@ -67,6 +79,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'question has been answered' do
+      
       before do
         create(:question, :with_answer)
         get :show, params: { id: question.id }
@@ -79,8 +92,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #index' do
+    
     let(:questions) { create_list(:question, 3) }
+    
     before { get :index }
+    
     it 'renders index view' do
       expect(response).to render_template :index
     end
@@ -90,22 +106,39 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe 'DELETE #destroy' do    
     context 'question belongs to user' do
       let(:user) { create(:user, :with_question) }
+      
       before { login(user) }
+
       it 'destroys question' do
-        expect { delete :destroy, params: { id: user.questions.first.id } }.to change(user.questions, :count).by(-1)
+        expect do
+          delete :destroy,
+                 params: { id: user.questions.first.id }
+        end.to change(user.questions, :count).by(-1)
+      end
+
+      it 'redirect to index view' do
+        delete :destroy, params: { id: user.questions.first.id }
+        expect(response).to redirect_to questions_path
       end
     end
 
     context 'question doesn`t belong to user' do
+      
       let(:user) { create(:user) }
-      let(:question) { create(:question) }
+      let!(:question) { create(:question) }
+      
       before { login(user) }
 
       it 'doesn`t destroy question' do
-        expect { delete :destroy, params: { id: question.id } }.to_not change(user.questions, :count)
+        expect { delete :destroy, params: { id: question.id } }.to_not change(Question, :count)
+      end
+
+      it 'renders question`s show view' do
+        delete :destroy, params: { id: question.id }
+        expect(response).to render_template :show
       end
     end
   end
