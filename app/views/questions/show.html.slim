@@ -21,7 +21,7 @@ h2 Answers
 				= answer.body
 				br
 				- if current_user && current_user.author?(answer)
-					= link_to 'Delete answer', question_answer_path(answer.question, answer), method: :delete
+					= link_to 'Delete answer', answer_path(answer), method: :delete
 - else
 	p Nobody has answered this question yet
 
