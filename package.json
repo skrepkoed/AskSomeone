@@ -13,6 +13,7 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "expose-loader": "^2.0.0",
     "webpack-dev-server": "^3.11.2"
   }
 }

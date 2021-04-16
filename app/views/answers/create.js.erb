@@ -1,0 +1,8 @@
+$('.errors').html('<%= render 'shared/errors' %>');
+<%if @answer.persisted?%>
+  $('.notice').html('<%= render 'shared/messages' %>');
+  $('.answers').append('<%= j render @answer %>');
+  $('.answers .no_answers').text('');
+  $('#answer_body').val('');
+<%end%>
+

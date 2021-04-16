@@ -10,8 +10,7 @@
   </head>
 
   <body>
-     <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+      <p><%= render '/shared/messages' %></p>
       <p><%= render '/shared/errors' %></p>
       <p>
         <%if current_user %>

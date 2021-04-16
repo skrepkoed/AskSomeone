@@ -10,11 +10,12 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(params_answer)
     @answer.user_id = current_user.id
     if @answer.save
-      redirect_to @answer.question, notice: 'Your answer was accepted'
+      @answers=@question.answers
+       flash[:notice] = 'Your answer was accepted'
     else
       @answers = @question.answers.all
       flash[:errors] = @answer.errors.full_messages
-      render 'questions/show'
+      #render 'questions/show'
     end
   end
 

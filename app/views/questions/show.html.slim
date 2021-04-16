@@ -12,22 +12,15 @@ p
 		= link_to 'Delete question', question_path(@question), method: :delete
 
 h2 Answers
-- unless @answers.empty?
-	ul
-		- @answers.each do |answer|
-			li.answer
-				= "Author: #{answer.author.email}" 
-				br
-				= answer.body
-				br
-				- if current_user && current_user.author?(answer)
-					= link_to 'Delete answer', answer_path(answer), method: :delete
-- else
-	p Nobody has answered this question yet
+ul.answers
+  - unless @answers.empty?
+		= render @answers
+  - else
+  	p.no_answers Nobody has answered this question yet
 
 - if current_user
 	p 
-	= form_with model: [@question, @answer], local: true do |answer|
+	= form_with model: [@question, @answer], local: false do |answer|
 		p 
 			= answer.label :body
 			= answer.text_area :body

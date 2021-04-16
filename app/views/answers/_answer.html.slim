@@ -1,0 +1,7 @@
+li.answer
+        = "Author: #{answer.author.email}" 
+        br
+        = answer.body
+        br
+        - if current_user && current_user.author?(answer)
+          = link_to 'Delete answer', answer_path(answer), method: :delete

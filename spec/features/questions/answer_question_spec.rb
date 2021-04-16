@@ -14,16 +14,19 @@ feature 'Authenticated user can answer the question at question`s show page', '
       visit question_path(question)
     end
 
-    scenario 'answer question with valid parameters' do
+    scenario 'answer question with valid parameters', js: true do
       fill_in 'Body', with: 'Answer body'
       click_on 'Answer'
-
+      wait_for_ajax
       expect(page).to have_content('Your answer was accepted')
       expect(page).to have_content('Answer body')
+      expect(page).to_not have_content('Nobody has answered this question yet')
+
     end
 
-    scenario 'answer question with invalid parameters' do
+    scenario 'answer question with invalid parameters', js: true do
       click_on 'Answer'
+      wait_for_ajax
       expect(page).to have_content("Body can't be blank")
     end
   end
