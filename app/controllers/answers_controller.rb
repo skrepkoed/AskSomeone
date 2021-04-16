@@ -27,12 +27,11 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @question=@answer.question
     if current_user.author?(@answer)
       @answer.destroy
-      redirect_to question_path(@question), notice: 'Your answer has been deleted'
+       flash[:notice] = 'Your answer has been deleted'
     else
-      redirect_to question_path(@question), notice: 'You must be author to delete'
+      flash[:notice] = 'You must be author to delete'
     end
   end
 

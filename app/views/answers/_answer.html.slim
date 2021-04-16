@@ -4,6 +4,6 @@ li.answer id="answer-#{answer.id}"
   = answer.body
   br
   - if current_user && current_user.author?(answer)
-    = link_to 'Delete answer', answer_path(answer), method: :delete
+    = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
     br
     = link_to 'Edit answer', edit_answer_path(answer), class: 'edit-answer-link', remote: true

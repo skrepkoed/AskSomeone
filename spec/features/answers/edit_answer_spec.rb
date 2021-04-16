@@ -38,7 +38,7 @@ I`d like to visit question`s show page and edit my answer}do
         visit question_path(question) 
       end
 
-      scenario 'User can`t edit another answers' do
+      scenario 'User can`t edit another answers', js: true  do
         expect(page).to_not have_content 'Edited Answer'
       end
     end
@@ -50,7 +50,7 @@ I`d like to visit question`s show page and edit my answer}do
 
     background{visit question_path(question)}
 
-    scenario "User can`t edit another answers" do
+    scenario "User can`t edit another answers", js: true do
       expect(page).to_not have_content 'Edited Answer'
     end
   end

@@ -8,6 +8,7 @@ feature 'Authenticated user can delete his own questions', '
     
     describe 'Question belongs to user' do
       given(:user) { create(:user, :with_question) }
+      given(:question_for_delete){user.questions.first.body}
 
       background do
         sign_in(user)
@@ -15,9 +16,10 @@ feature 'Authenticated user can delete his own questions', '
       end
 
       scenario 'User can delete his own question' do
-        expect(page).to have_content(user.questions.first.body)
+        expect(page).to have_content(question_for_delete)
         click_on('Delete question')
         expect(page).to have_content('Your question has been deleted')
+        expect(page).to_not have_content(question_for_delete)
       end
     end
     
@@ -31,7 +33,7 @@ feature 'Authenticated user can delete his own questions', '
         visit question_path(question.id)
       end
 
-      scenario 'User can`t delete question that belongs to another user' do
+      scenario 'User can`t delete question that belongs to another user', js: true do
         expect(page).to_not have_content('Delete question')
       end
     end

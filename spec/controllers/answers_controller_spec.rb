@@ -68,13 +68,13 @@ RSpec.describe AnswersController, type: :controller do
       it 'destroys question' do
         expect do
           delete :destroy,
-                 params: { question_id: answer.question.id, id: user.answers.first.id }
+                 params: { question_id: answer.question.id, id: user.answers.first.id }, format: :js 
         end.to change(Answer, :count).by(-1)
       end
 
-      it 'renders question`s show' do
-        delete :destroy, params: { question_id: answer.question.id, id: user.answers.first.id }
-        expect(response).to redirect_to question
+      it 'renders destroy.js.erb' do
+        delete :destroy, params: { question_id: answer.question.id, id: user.answers.first.id }, format: :js 
+        expect(response).to render_template :destroy
       end
     end
 
@@ -89,13 +89,13 @@ RSpec.describe AnswersController, type: :controller do
       it 'doesn`t destroy question' do
         expect do
           delete :destroy,
-                 params: { question_id: answer.question.id, id: answer.id }
+                 params: { question_id: answer.question.id, id: answer.id }, format: :js 
         end.to_not change(Answer, :count)
       end
 
-      it 'renders question`s show' do
-        delete :destroy, params: { question_id: answer.question.id, id: answer.id }
-        expect(response).to redirect_to question
+      it 'renders destroy.js.erb' do
+        delete :destroy, params: { question_id: answer.question.id, id: answer.id }, format: :js 
+        expect(response).to render_template :destroy
       end
     end
   end

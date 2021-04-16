@@ -17,7 +17,7 @@ feature 'Authenticated user can delete his own answers', '
         visit question_path(question.id)
       end
 
-      scenario 'User can delete his own answer' do
+      scenario 'User can delete his own answer', js: true do
         expect(page).to have_content(answer.body)
         click_on('Delete answer')
         expect(page).to have_content('Your answer has been deleted')
@@ -36,7 +36,7 @@ feature 'Authenticated user can delete his own answers', '
         visit question_path(question.id)
       end
       
-      scenario 'User can`t delete answer that belongs to another user' do
+      scenario 'User can`t delete answer that belongs to another user', js: true do
         expect(page).to_not have_content('Delete answer')
       end
     end
@@ -48,7 +48,7 @@ feature 'Authenticated user can delete his own answers', '
     given(:answer) { create(:answer) }
     given(:question) { answer.question }
 
-    scenario 'User can`t delete question' do
+    scenario 'User can`t delete question', js: true do
       visit question_path(question.id)
       expect(page).to_not have_content('Delete question')
     end
