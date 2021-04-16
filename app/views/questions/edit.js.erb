@@ -1,0 +1,2 @@
+$('#question-<%= @question.id%>').html('<%= j render '/questions/question_form', question: @question%>')
+$('#question-<%= @question.id%> input[type=submit]').val('Edit question')

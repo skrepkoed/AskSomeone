@@ -1,2 +1,2 @@
-$('#edit-answer-<%= @answer.id %>').html('<%= j render '/answers/answer_form', answer: [@answer] %>')
+$('#answer-<%= @answer.id %>').html('<%= j render '/answers/answer_form', answer: [@answer] %>')
 $('.answers input[type=submit]').val('Edit Answer')

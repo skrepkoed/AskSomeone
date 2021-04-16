@@ -1,15 +1,5 @@
 h1 Question
-
-h2
-	= @question.title
-p  
-	= "Author: #{@question.author.email}"
-p
-  = @question.body
-
-p
-	- if current_user && current_user.author?(@question)
-		= link_to 'Delete question', question_path(@question), method: :delete
+= render @question
 
 h2 Answers
 ul.answers

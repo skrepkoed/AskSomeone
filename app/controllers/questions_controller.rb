@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question, only: %i[show destroy]
+  before_action :set_question, only: %i[show destroy edit update]
   def new
     @question = current_user.questions.new
   end
@@ -22,6 +22,14 @@ class QuestionsController < ApplicationController
   def show
     set_new_answer if current_user
     @answers = @question.answers.all
+  end
+
+  def edit
+  end
+
+  def update
+    @question.update(params_question)
+    flash[:errors] = @question.errors.full_messages
   end
 
   def destroy
