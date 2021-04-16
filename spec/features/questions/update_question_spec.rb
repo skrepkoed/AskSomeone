@@ -1,17 +1,16 @@
 require 'rails_helper'
 
 feature 'User can update question',
- %q{In order to change question as authenticated user I'd like 
-  to visit question`s show page and edit my question}do
-    
+        "In order to change question as authenticated user I'd like
+  to visit question`s show page and edit my question" do
   describe 'User is authenticated' do
     describe 'Question belongs to user' do
-      given(:question){create(:question)}
-      given(:user){question.author}
-      
-      background do 
+      given(:question) { create(:question) }
+      given(:user) { question.author }
+
+      background do
         sign_in(user)
-        visit question_path(question) 
+        visit question_path(question)
       end
 
       scenario 'User can edit his own answer', js: true do
@@ -24,14 +23,14 @@ feature 'User can update question',
         end
       end
     end
-  
-    describe 'Question doesnt belong to user' do
-      given(:question){create(:question)}
-      given(:user){create(:user)}
 
-      background do 
-          sign_in(user)
-          visit question_path(question) 
+    describe 'Question doesnt belong to user' do
+      given(:question) { create(:question) }
+      given(:user) { create(:user) }
+
+      background do
+        sign_in(user)
+        visit question_path(question)
       end
 
       scenario 'User can edit his own answer', js: true do

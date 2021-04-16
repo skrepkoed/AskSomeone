@@ -3,6 +3,9 @@ h1 Question
 
 h2 Answers
 ul.answers
+  - if @best_answer
+    = render @best_answer
+    p.best Best!
   - unless @answers.empty?
 		= render @answers
   - else

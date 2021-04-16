@@ -1,0 +1,4 @@
+$('.best').remove()
+$('#answer-<%= @question.best_answer.id%>').remove()
+$('.answers').prepend('<%= render '/answers/answer', answer:@question.best_answer %>')
+$('#answer-<%= @question.best_answer.id%>').append('<p class="best">Best!<\/p>')

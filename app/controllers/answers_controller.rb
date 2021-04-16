@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: %i(create)
-  before_action :set_answer, only: %i(destroy edit update)
+  before_action :set_question, only: %i[create]
+  before_action :set_answer, only: %i[destroy edit update]
   def new
     @answer = Answer.new
   end
@@ -11,15 +11,14 @@ class AnswersController < ApplicationController
     @answer.user_id = current_user.id
     if @answer.save
       @answers = @question.answers
-       flash[:notice] = 'Your answer was accepted'
+      flash[:notice] = 'Your answer was accepted'
     else
       @answers = @question.answers.all
       flash[:errors] = @answer.errors.full_messages
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @answer.update(params_answer)
@@ -29,7 +28,7 @@ class AnswersController < ApplicationController
   def destroy
     if current_user.author?(@answer)
       @answer.destroy
-       flash[:notice] = 'Your answer has been deleted'
+      flash[:notice] = 'Your answer has been deleted'
     else
       flash[:notice] = 'You must be author to delete'
     end

@@ -1,13 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  
   let(:user) { create(:user) }
   let(:answer) { create(:answer) }
   let(:question) { create(:question) }
-  
+
   before { login(user) }
-  
+
   describe 'GET #new' do
     before { get :new, params: { question_id: answer.question } }
 
@@ -21,80 +20,76 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'POST #create' do 
+  describe 'POST #create' do
     context 'with valid values' do
-      
       it 'saves answers in DB' do
         expect do
           post :create, params: { question_id: question.id, answer: attributes_for(:answer, :for_create) },
-          format: :js 
+                        format: :js
         end.to change(question.answers, :count).by(1)
       end
 
       it 'renders create.js.erb view' do
         post :create, params: { question_id: question.id, answer: attributes_for(:answer, :for_create) },
-        format: :js 
+                      format: :js
         expect(response).to render_template :create
       end
     end
 
     context 'with invalid values' do
-      
       it 'doesn`t saves answers in DB' do
         expect do
           post :create,
                params: { question_id: question.id, answer: attributes_for(:answer, :invalid) },
-               format: :js 
+               format: :js
         end.to_not change(Answer, :count)
       end
 
       it 'renders create.js.erb view' do
         post :create, params: { question_id: question.id, answer: attributes_for(:answer, :invalid) },
-        format: :js 
+                      format: :js
         expect(response).to render_template :create
       end
     end
   end
 
-  describe 'DELETE #destroy' do   
+  describe 'DELETE #destroy' do
     context 'answer belongs to user' do
-      
       let!(:answer) { create(:answer) }
       let!(:user) { answer.author }
       let!(:question) { answer.question }
-      
+
       before { login(user) }
 
       it 'destroys question' do
         expect do
           delete :destroy,
-                 params: { question_id: answer.question.id, id: user.answers.first.id }, format: :js 
+                 params: { question_id: answer.question.id, id: user.answers.first.id }, format: :js
         end.to change(Answer, :count).by(-1)
       end
 
       it 'renders destroy.js.erb' do
-        delete :destroy, params: { question_id: answer.question.id, id: user.answers.first.id }, format: :js 
+        delete :destroy, params: { question_id: answer.question.id, id: user.answers.first.id }, format: :js
         expect(response).to render_template :destroy
       end
     end
 
     context 'question doesn`t belong to user' do
-      
       let(:user) { create(:user) }
       let!(:answer) { create(:answer) }
       let!(:question) { answer.question }
-      
+
       before { login(user) }
 
       it 'doesn`t destroy question' do
         expect do
           delete :destroy,
-                 params: { question_id: answer.question.id, id: answer.id }, format: :js 
+                 params: { question_id: answer.question.id, id: answer.id }, format: :js
         end.to_not change(Answer, :count)
       end
 
       it 'renders destroy.js.erb' do
-        delete :destroy, params: { question_id: answer.question.id, id: answer.id }, format: :js 
+        delete :destroy, params: { question_id: answer.question.id, id: answer.id }, format: :js
         expect(response).to render_template :destroy
       end
     end
@@ -104,11 +99,11 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer) }
     let!(:user) { answer.author }
     let!(:question) { answer.question }
-      
+
     before { login(user) }
 
     it 'renders edit.js.erb' do
-      get :edit, params:{id: answer.id}, xhr: true, format: :js
+      get :edit, params: { id: answer.id }, xhr: true, format: :js
       expect(response).to render_template :edit
     end
   end

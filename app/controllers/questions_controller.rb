@@ -21,15 +21,22 @@ class QuestionsController < ApplicationController
 
   def show
     set_new_answer if current_user
-    @answers = @question.answers.all
+    @answers = @question.answers.where.not(id: @question.best_answer_id)
+    @best_answer = @question.best_answer
+    # byebug
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @question.update(params_question)
     flash[:errors] = @question.errors.full_messages
+  end
+
+  def mark_best
+    @question = Question.find(params[:question_id])
+    @answer = Answer.find(params[:answer_id])
+    @question.update(best_answer_id: @answer.id)
   end
 
   def destroy
