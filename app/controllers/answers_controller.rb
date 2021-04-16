@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: %i(create)
-  before_action :set_answer, only: %i(destroy)
+  before_action :set_answer, only: %i(destroy edit update)
   def new
     @answer = Answer.new
   end
@@ -10,13 +10,20 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(params_answer)
     @answer.user_id = current_user.id
     if @answer.save
-      @answers=@question.answers
+      @answers = @question.answers
        flash[:notice] = 'Your answer was accepted'
     else
       @answers = @question.answers.all
       flash[:errors] = @answer.errors.full_messages
-      #render 'questions/show'
     end
+  end
+
+  def edit
+  end
+
+  def update
+    @answer.update(params_answer)
+    flash[:errors] = @answer.errors.full_messages
   end
 
   def destroy

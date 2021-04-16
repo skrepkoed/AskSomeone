@@ -1,7 +1,9 @@
-li.answer
-        = "Author: #{answer.author.email}" 
-        br
-        = answer.body
-        br
-        - if current_user && current_user.author?(answer)
-          = link_to 'Delete answer', answer_path(answer), method: :delete
+li.answer id="edit-answer-#{answer.id}"
+  = "Author: #{answer.author.email}" 
+  br
+  = answer.body
+  br
+  - if current_user && current_user.author?(answer)
+    = link_to 'Delete answer', answer_path(answer), method: :delete
+    br
+    = link_to 'Edit answer', edit_answer_path(answer), class: 'edit-answer-link', remote: true

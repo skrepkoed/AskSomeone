@@ -1,0 +1,6 @@
+<% unless flash[:errors].empty? %>
+  $('.errors').html('<%= render 'shared/errors' %>');
+  $('#edit-answer-<%= @answer.id %>').html('<%= render @answer.reload %>')
+<% else %>
+  $('#edit-answer-<%= @answer.id %>').html('<%= render @answer%>')
+<%end%>

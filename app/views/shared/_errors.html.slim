@@ -1,6 +1,6 @@
 .errors
   - if flash[:errors]
   	ul
-  	= flash[:errors].each do |error|
+  	- flash[:errors].each do |error|
   		li 
   			= error

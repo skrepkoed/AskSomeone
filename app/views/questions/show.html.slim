@@ -20,11 +20,6 @@ ul.answers
 
 - if current_user
 	p 
-	= form_with model: [@question, @answer], local: false do |answer|
-		p 
-			= answer.label :body
-			= answer.text_area :body
-		p 
-			= answer.submit 'Answer'
+	  = render '/answers/answer_form', answer: [@question, @answer]
 - else
 	p You need to be signed in to answer questions
