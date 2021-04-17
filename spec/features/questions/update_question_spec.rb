@@ -4,7 +4,9 @@ feature 'User can update question',
         "In order to change question as authenticated user I'd like
   to visit question`s show page and edit my question" do
   describe 'User is authenticated' do
+    
     describe 'Question belongs to user' do
+      
       given(:question) { create(:question) }
       given(:user) { question.author }
 
@@ -15,9 +17,12 @@ feature 'User can update question',
 
       scenario 'User can edit his own answer', js: true do
         click_on 'Edit question'
+        
         within "#question-#{question.id}" do
+          
           fill_in 'Body', with: 'Edited Question'
           click_on 'Edit'
+          
           expect(page).to_not have_link 'Edit question'
           expect(page).to have_content 'Edited Question'
         end
@@ -25,6 +30,7 @@ feature 'User can update question',
     end
 
     describe 'Question doesnt belong to user' do
+      
       given(:question) { create(:question) }
       given(:user) { create(:user) }
 
@@ -34,6 +40,7 @@ feature 'User can update question',
       end
 
       scenario 'User can edit his own answer', js: true do
+        
         within "#question-#{question.id}" do
           expect(page).to_not have_link 'Edit question'
         end

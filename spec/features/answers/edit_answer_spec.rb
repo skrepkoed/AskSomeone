@@ -5,6 +5,7 @@ feature 'User can edit his answer',
 I`d like to visit question`s show page and edit my answer' do
   describe 'User is authenticated' do
     describe 'User has answered this question before' do
+      
       given(:answer) { create(:answer) }
       given(:user) { answer.author }
       given(:question) { answer.question }
@@ -15,17 +16,21 @@ I`d like to visit question`s show page and edit my answer' do
       end
 
       scenario 'User can edit his own answer', js: true do
+        
         click_on 'Edit answer'
+        
         within '.answers' do
           fill_in 'Body', with: 'Edited Answer'
         end
         click_on 'Edit'
+        
         expect(page).to_not have_link 'Edit answer'
         expect(page).to have_content 'Edited Answer'
       end
     end
 
     describe "User hasn't answered this question before" do
+      
       given(:answer) { create(:answer) }
       given(:user) { create(:user) }
       given(:question) { answer.question }
@@ -42,6 +47,7 @@ I`d like to visit question`s show page and edit my answer' do
   end
 
   describe "User isn't authenticated" do
+    
     given(:answer) { create(:answer) }
     given(:question) { answer.question }
 
