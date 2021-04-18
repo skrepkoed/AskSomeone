@@ -1,0 +1,8 @@
+= form_with model: answer, html: { id: "edit-answer-#{answer.id}" }, local: false do |answer|
+  p 
+    = answer.label :body
+  br
+    = answer.text_area :body
+  br
+  p 
+    = answer.submit 'Answer'

@@ -95,22 +95,12 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    let!(:answer) { create(:answer) }
-    let!(:user) { answer.author }
-    let!(:question) { answer.question }
-
-    before { login(user) }
-
-    it 'renders edit.js.erb' do
-      get :edit, params: { id: answer.id }, xhr: true, format: :js
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'PATCH #update' do
     let!(:answer) { create(:answer) }
+    let!(:user) { answer.author }
 
+    before { login(user) }
+    
     context 'with valid attributes' do
       it 'changes answer attributes' do
         patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js

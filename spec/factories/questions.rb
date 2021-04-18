@@ -18,7 +18,7 @@ FactoryBot.define do
       title { 'MyTitle' }
       body { 'My Question' }
       after :create do |question|
-        create_list :answer, 3, :for_create, question_id: question.id
+        create_list :answer, 3, :for_create, question_id: question.id, user_id: question.author.id
       end
     end
   end

@@ -1,4 +1,12 @@
-$('.best').remove()
-$('#answer-<%= @question.best_answer.id%>').remove()
-$('.answers').prepend('<%= render '/answers/answer', answer:@question.best_answer %>')
-$('#answer-<%= @question.best_answer.id%>').append('<p class="best">Best!<\/p>')
+<% unless flash[:notice]%>
+  $('.best').empty()
+  $('#answer-<%= @question.best_answer.id%>').remove()
+  $('.answers .best').prepend('<%= j render '/answers/answer', answer: @question.best_answer %>')
+  $('#answer-<%= @question.best_answer.id%> .best-answer-link').remove()
+  $('.answers .best').append('<p>Best!<\/p>')
+  <%if @former_best_answer %>
+    $('.answers .best').after('<%= j render '/answers/answer', answer:@former_best_answer %>')
+  <%end%>
+<%else%>
+  $('.notice').html('<%= render 'shared/messages' %>')
+<%end%>

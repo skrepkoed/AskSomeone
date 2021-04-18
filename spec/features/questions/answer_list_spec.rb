@@ -5,9 +5,10 @@ feature 'Someone can get list of answers', '
   describe 'if question was answered' do
     given(:question) { create(:question, :with_answer) }
     given(:expected_answers) { question.answers.pluck(:body) }
-
+    background{question.mark_best_answer(question.answers.first.id)}
     scenario 'get list of answers on question`s show page' do
       visit question_path(question)
+      expect(page).to have_content 'Best!'
       expected_answers.each { |answer_body| expect(page).to have_content answer_body }
     end
   end

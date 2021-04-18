@@ -19,12 +19,12 @@ I`d like to visit question`s show page and edit my answer' do
         
         click_on 'Edit answer'
         
-        within '.answers' do
+        within ".answers #answer-#{answer.id}" do
           fill_in 'Body', with: 'Edited Answer'
         end
         click_on 'Edit'
-        
-        expect(page).to_not have_link 'Edit answer'
+        wait_for_ajax
+        expect(page).to_not have_link 'Edit', exact: true
         expect(page).to have_content 'Edited Answer'
       end
     end

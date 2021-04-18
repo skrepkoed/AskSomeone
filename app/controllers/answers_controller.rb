@@ -8,29 +8,32 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(params_answer)
-    @answer.user_id = current_user.id
+    @answer.author = current_user
     if @answer.save
       @answers = @question.answers
-      flash[:notice] = 'Your answer was accepted'
+      flash.now[:notice] = 'Your answer was accepted'
     else
       @answers = @question.answers.all
-      flash[:errors] = @answer.errors.full_messages
+      flash.now[:errors] = @answer.errors.full_messages
     end
+    @new_answer=Answer.new
   end
-
-  def edit; end
-
+  
   def update
-    @answer.update(params_answer)
-    flash[:errors] = @answer.errors.full_messages
+    if current_user.author?(@answer)
+      @answer.update(params_answer)
+      flash.now[:errors] = @answer.errors.full_messages
+    else
+      flash.now[:notice] ='You must be author to edit'
+    end
   end
 
   def destroy
     if current_user.author?(@answer)
       @answer.destroy
-      flash[:notice] = 'Your answer has been deleted'
+      flash.now[:notice] = 'Your answer has been deleted'
     else
-      flash[:notice] = 'You must be author to delete'
+      flash.now[:notice] = 'You must be author to delete'
     end
   end
 

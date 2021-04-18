@@ -1,6 +1,10 @@
-<% unless flash[:errors].empty? %>
-  $('.errors').html('<%= render 'shared/errors' %>');
-  $('#question-<%= @question.id %>').html('<%= render @question.reload %>')
-<% else %>
-  $('#question-<%= @question.id %>').html('<%= render @question%>')
+<%unless flash[:notice]%>
+  <% unless flash[:errors].empty? %>
+    $('.errors').html('<%= render 'shared/errors' %>');
+    $('#question-<%= @question.id %>').replaceWith('<%= j render @question.reload %>')
+  <% else %>
+    $('#question-<%= @question.id %>').replaceWith('<%= j render @question%>')
+  <%end%>
+<%else%>
+  $('.notice').html('<%= render 'shared/messages' %>')
 <%end%>

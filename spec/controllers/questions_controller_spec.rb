@@ -134,20 +134,11 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    let!(:question) { create(:question) }
-    let!(:user) { question.author }
-
-    before { login(user) }
-
-    it 'renders edit.js.erb' do
-      get :edit, params: { id: question.id }, xhr: true, format: :js
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'PATCH #update' do
     let!(:question) { create(:question) }
+    let!(:user){ question.author }
+
+    before { login(user) }
 
     context 'with valid attributes' do
       it 'changes answer attributes' do
@@ -176,13 +167,18 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATC #mark_best' do
+  describe 'PATCH #mark_best' do
     let!(:question) { create(:question, :with_answer) }
     let!(:user) { question.author }
 
     before { login(user) }
 
-    it 'renders edit.js.erb' do
+    it 'has best answer' do
+      patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+      expect(assigns(:question).best_answer).to eq question.answers.first
+    end
+
+    it 'renders mark_best.js.erb' do
       patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
       expect(response).to render_template :mark_best
     end

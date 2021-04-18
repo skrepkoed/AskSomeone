@@ -5,4 +5,8 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
   validates :body, length: { minimum: 5 }
+
+  def mark_best_answer(answer_id)
+    update(best_answer_id: answer_id)
+  end
 end

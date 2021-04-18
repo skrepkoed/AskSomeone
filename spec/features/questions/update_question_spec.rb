@@ -22,10 +22,9 @@ feature 'User can update question',
           
           fill_in 'Body', with: 'Edited Question'
           click_on 'Edit'
-          
-          expect(page).to_not have_link 'Edit question'
-          expect(page).to have_content 'Edited Question'
         end
+        expect(page).to_not have_link 'Edit', exact:true
+        expect(page).to have_content 'Edited Question'
       end
     end
 
