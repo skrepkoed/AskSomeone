@@ -126,5 +126,17 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    context 'Answer doesn`t belong to user' do
+      let!(:answer) { create(:answer) }
+      let(:user) { create(:user) }
+      before { login(user) }
+
+      it 'does not change answer attributes' do
+        expect do
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        end.to_not change(answer, :body)
+      end
+    end
   end
 end

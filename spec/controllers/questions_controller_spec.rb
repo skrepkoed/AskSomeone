@@ -165,22 +165,52 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    context 'Question doesn`t belong to user' do |variable|
+      let!(:question) { create(:question) }
+      let!(:user) { create(:user) }
+      before { login(user) }
+      it 'does not change answer attributes' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        end.to_not change(question, :body)
+      end
+    end
   end
 
   describe 'PATCH #mark_best' do
-    let!(:question) { create(:question, :with_answer) }
-    let!(:user) { question.author }
+    context 'Question belongs to user' do
+      let!(:question) { create(:question, :with_answer) }
+      let!(:user) { question.author }
 
-    before { login(user) }
+      before { login(user) }
 
-    it 'has best answer' do
-      patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
-      expect(assigns(:question).best_answer).to eq question.answers.first
+      it 'has best answer' do
+        patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+        expect(assigns(:question).best_answer).to eq question.answers.first
+      end
+
+      it 'renders mark_best.js.erb' do
+        patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+        expect(response).to render_template :mark_best
+      end
     end
 
-    it 'renders mark_best.js.erb' do
-      patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
-      expect(response).to render_template :mark_best
+    context 'Question doesn`t belong to user' do
+      let!(:question) { create(:question, :with_answer) }
+      let!(:user) { create(:user) }
+
+      before { login(user) }
+
+      it 'has best answer' do
+        patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+        expect(assigns(:question).best_answer).to eq nil
+      end
+
+      it 'renders mark_best.js.erb' do
+        patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+        expect(flash[:notice]).to eq 'You must be author to mark answer as best'
+      end
     end
   end
 end
