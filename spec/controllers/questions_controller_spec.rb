@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  
   let(:user) { create(:user) }
-  
+
   before { login(user) }
 
   describe 'GET #new' do
-    
     before { get :new }
 
     it 'renders new view' do
@@ -24,9 +22,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    
     context 'with valid attrubutes' do
-      
       it 'saves new question in DB' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
       end
@@ -36,9 +32,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to redirect_to assigns(:question)
       end
     end
-    
+
     context 'with invalid attrubutes' do
-      
       it 'doesn`t save question ' do
         expect do
           post :create, params: { question: attributes_for(:question, :invalid) }
@@ -53,19 +48,18 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    
     let(:question) { create(:question) }
-    
+
     before { get :show, params: { id: question.id } }
-    
+
     it 'renders show view' do
       expect(response).to render_template :show
     end
-    
+
     it 'has question instance with requested id' do
       expect(assigns(:question)).to eq(question)
     end
-    
+
     it 'has  new answer instance' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
@@ -79,7 +73,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'question has been answered' do
-      
       before do
         create(:question, :with_answer)
         get :show, params: { id: question.id }
@@ -92,11 +85,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #index' do
-    
     let(:questions) { create_list(:question, 3) }
-    
+
     before { get :index }
-    
+
     it 'renders index view' do
       expect(response).to render_template :index
     end
@@ -106,10 +98,10 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do    
+  describe 'DELETE #destroy' do
     context 'question belongs to user' do
       let(:user) { create(:user, :with_question) }
-      
+
       before { login(user) }
 
       it 'destroys question' do
@@ -126,10 +118,9 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'question doesn`t belong to user' do
-      
       let(:user) { create(:user) }
       let!(:question) { create(:question) }
-      
+
       before { login(user) }
 
       it 'doesn`t destroy question' do
@@ -139,6 +130,86 @@ RSpec.describe QuestionsController, type: :controller do
       it 'renders question`s show view' do
         delete :destroy, params: { id: question.id }
         expect(response).to render_template :show
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    let!(:question) { create(:question) }
+    let!(:user){ question.author }
+
+    before { login(user) }
+
+    context 'with valid attributes' do
+      it 'changes answer attributes' do
+        patch :update, params: { id: question, question: { body: 'new body' } }, format: :js
+        question.reload
+        expect(question.body).to eq 'new body'
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: question, question: { body: 'new body' } }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid attributes' do
+      it 'does not change answer attributes' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        end.to_not change(question, :body)
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'Question doesn`t belong to user' do |variable|
+      let!(:question) { create(:question) }
+      let!(:user) { create(:user) }
+      before { login(user) }
+      it 'does not change answer attributes' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        end.to_not change(question, :body)
+      end
+    end
+  end
+
+  describe 'PATCH #mark_best' do
+    context 'Question belongs to user' do
+      let!(:question) { create(:question, :with_answer) }
+      let!(:user) { question.author }
+
+      before { login(user) }
+
+      it 'has best answer' do
+        patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+        expect(assigns(:question).best_answer).to eq question.answers.first
+      end
+
+      it 'renders mark_best.js.erb' do
+        patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+        expect(response).to render_template :mark_best
+      end
+    end
+
+    context 'Question doesn`t belong to user' do
+      let!(:question) { create(:question, :with_answer) }
+      let!(:user) { create(:user) }
+
+      before { login(user) }
+
+      it 'has best answer' do
+        patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+        expect(assigns(:question).best_answer).to eq nil
+      end
+
+      it 'renders mark_best.js.erb' do
+        patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
+        expect(flash[:notice]).to eq 'You must be author to mark answer as best'
       end
     end
   end

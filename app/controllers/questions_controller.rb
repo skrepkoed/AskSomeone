@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_question, only: %i[show destroy]
+  before_action :set_question, only: %i[show destroy edit update]
   def new
     @question = current_user.questions.new
   end
@@ -8,7 +8,8 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.new(params_question)
     if @question.save
-      redirect_to @question, notice: 'Your question successfully created.'
+      flash[:notice] = 'Your question successfully created.'
+      redirect_to @question
     else
       flash[:errors] = @question.errors.full_messages
       render :new
@@ -21,7 +22,27 @@ class QuestionsController < ApplicationController
 
   def show
     set_new_answer if current_user
-    @answers = @question.answers.all
+    @answers = @question.answers.where.not(id: @question.best_answer_id)
+    @best_answer = @question.best_answer
+  end
+
+  def update
+    if current_user.author?(@question)
+      @question.update(params_question)
+      flash[:errors] = @question.errors.full_messages
+    else
+      flash[:notice] ='You must be author to edit'
+    end
+  end
+
+  def mark_best
+    @question = Question.find(params[:question_id])
+    @former_best_answer = @question.best_answer
+    if current_user.author?(@question) 
+      @question.mark_best_answer(params[:answer_id])
+    else
+      flash[:notice] = 'You must be author to mark answer as best'
+    end
   end
 
   def destroy

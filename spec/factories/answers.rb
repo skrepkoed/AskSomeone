@@ -1,4 +1,7 @@
 FactoryBot.define do
+  sequence :body do |n|
+    "My Answer#{n}"
+  end
   factory :answer do
     question
     association :author, factory: :user
@@ -6,7 +9,7 @@ FactoryBot.define do
   end
 
   trait :for_create do
-    body { 'My Answer' }
+    body
   end
 
   trait :invalid do

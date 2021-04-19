@@ -1,29 +1,39 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question
+  before_action :set_question, only: %i[create]
+  before_action :set_answer, only: %i[destroy edit update]
   def new
     @answer = Answer.new
   end
 
   def create
     @answer = @question.answers.new(params_answer)
-    @answer.user_id = current_user.id
+    @answer.author = current_user
     if @answer.save
-      redirect_to @answer.question, notice: 'Your answer was accepted'
+      @answers = @question.answers
+      flash.now[:notice] = 'Your answer was accepted'
     else
       @answers = @question.answers.all
-      flash[:errors] = @answer.errors.full_messages
-      render 'questions/show'
+      flash.now[:errors] = @answer.errors.full_messages
+    end
+    @new_answer=Answer.new
+  end
+  
+  def update
+    if current_user.author?(@answer)
+      @answer.update(params_answer)
+      flash.now[:errors] = @answer.errors.full_messages
+    else
+      flash.now[:notice] ='You must be author to edit'
     end
   end
 
   def destroy
-    set_answer
     if current_user.author?(@answer)
       @answer.destroy
-      redirect_to question_path(@question), notice: 'Your answer has been deleted'
+      flash.now[:notice] = 'Your answer has been deleted'
     else
-      redirect_to question_path(@question), notice: 'You must be author to delete'
+      flash.now[:notice] = 'You must be author to delete'
     end
   end
 
