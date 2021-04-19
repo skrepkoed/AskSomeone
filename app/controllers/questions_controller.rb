@@ -28,7 +28,6 @@ class QuestionsController < ApplicationController
 
   def update
     if current_user.author?(@question)
-      byebug
       @question.update(params_question)
       flash[:errors] = @question.errors.full_messages
     else
@@ -43,6 +42,16 @@ class QuestionsController < ApplicationController
       @question.mark_best_answer(params[:answer_id])
     else
       flash[:notice] = 'You must be author to mark answer as best'
+    end
+  end
+
+  def delete_attachment
+    @question = Question.find(params[:question_id])
+    @file_id = params[:file_id]
+    if current_user.author?(@question)
+      @question.files.find(params[:file_id]).purge
+    else
+      flash[:notice] = 'You must be author to delete attachment'
     end
   end
 

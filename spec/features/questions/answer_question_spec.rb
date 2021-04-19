@@ -32,7 +32,6 @@ feature 'Authenticated user can answer the question at question`s show page', '
 
     scenario 'answer question with invalid parameters', js: true do
       click_on 'Answer'
-      wait_for_ajax
       expect(page).to have_content("Body can't be blank")
     end
   end
