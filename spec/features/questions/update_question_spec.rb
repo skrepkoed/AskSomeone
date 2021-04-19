@@ -5,7 +5,7 @@ feature 'User can update question',
   to visit question`s show page and edit my question" do
   describe 'User is authenticated' do
     
-    describe 'Question belongs to user' do
+    describe 'Question belongs to user', js: true do
       
       given(:question) { create(:question) }
       given(:user) { question.author }
@@ -15,7 +15,7 @@ feature 'User can update question',
         visit question_path(question)
       end
 
-      scenario 'User can edit his own answer', js: true do
+      scenario 'User can edit his own question' do
         click_on 'Edit question'
         
         within "#question-#{question.id}" do
@@ -25,6 +25,28 @@ feature 'User can update question',
         end
         expect(page).to_not have_link 'Edit', exact:true
         expect(page).to have_content 'Edited Question'
+      end
+
+      scenario 'User can attach file while update' do
+        click_on 'Edit question'
+        
+        within "#question-#{question.id}" do      
+          attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+          click_on 'Edit'
+        end
+        expect(page).to_not have_link 'Edit', exact:true
+        expect(page).to have_link 'rails_helper.rb'
+      end
+      scenario 'User can attach several files while update' do
+        click_on 'Edit question'
+        
+        within "#question-#{question.id}" do      
+          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb","#{Rails.root}/spec/spec_helper.rb"]
+          click_on 'Edit'
+        end
+        expect(page).to_not have_link 'Edit', exact:true
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
       end
     end
 

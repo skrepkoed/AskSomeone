@@ -23,9 +23,21 @@ I`d like to visit question`s show page and edit my answer' do
           fill_in 'Body', with: 'Edited Answer'
         end
         click_on 'Edit'
-        wait_for_ajax
         expect(page).to_not have_link 'Edit', exact: true
         expect(page).to have_content 'Edited Answer'
+      end
+
+      scenario 'User can add file while edit his own answer', js: true do
+        
+        click_on 'Edit answer'
+        
+        within ".answers #answer-#{answer.id}" do
+          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        end
+        click_on 'Edit'
+        expect(page).to_not have_link 'Edit', exact: true
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
       end
     end
 

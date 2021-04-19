@@ -28,6 +28,7 @@ class QuestionsController < ApplicationController
 
   def update
     if current_user.author?(@question)
+      byebug
       @question.update(params_question)
       flash[:errors] = @question.errors.full_messages
     else
@@ -57,11 +58,11 @@ class QuestionsController < ApplicationController
   private
 
   def params_question
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files:[])
   end
 
   def set_question
-    @question ||= Question.find(params[:id])
+    @question ||= Question.with_attached_files.find(params[:id])
   end
 
   def set_new_answer

@@ -40,7 +40,7 @@ class AnswersController < ApplicationController
   private
 
   def params_answer
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, files:[])
   end
 
   def set_answer
@@ -48,6 +48,6 @@ class AnswersController < ApplicationController
   end
 
   def set_question
-    @question ||= Question.find(params[:question_id])
+    @question ||= Question.with_attached_files.find(params[:question_id])
   end
 end

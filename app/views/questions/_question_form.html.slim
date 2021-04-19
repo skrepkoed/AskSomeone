@@ -5,4 +5,7 @@
   p
     = question.label :body
     = question.text_area :body
+  p
+    = question.label :files
+    = question.file_field :files, multiple: true
   = question.submit 'Ask question'
