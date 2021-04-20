@@ -8,9 +8,9 @@ div.question id="question-#{question.id}"
   - if current_user&.author?(question)  
     -if question.files.attached?
       - question.files.each do |file|
-        p id="file-id-#{file.id}"
+        p id="attachment-id-#{file.id}"
           = link_to file.filename.to_s, url_for(file)
-          = link_to 'Delete attachment', question_delete_attachment_path(question, file), method: :delete, remote: true
+          = link_to 'Delete attachment', question_attachment_path(question, file), method: :delete, remote: true
 
   p
     - if current_user&.author?(question)

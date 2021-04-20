@@ -6,9 +6,9 @@ li.answer id="answer-#{answer.id}"
   - if answer.files.attached?
     - if current_user&.author?(answer)
       - answer.files.each do |file|
-        p id="answer-file-id-#{file.id}"
+        p id="attachment-id-#{file.id}"
           = link_to file.filename.to_s, url_for(file)
-          = link_to 'Delete attachment', answer_delete_attachment_path(answer, file), method: :delete, remote: true
+          = link_to 'Delete attachment', answer_attachment_path(answer, file), method: :delete, remote: true
   - if current_user&.author?(answer)
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
     br

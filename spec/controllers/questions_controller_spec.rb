@@ -178,46 +178,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'DELETE #delete_attachment' do
-    context 'Question belongs to user' do
-      let!(:question) { create(:question) }
-      let!(:user) { question.author }
-      before do 
-        question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename:'rails_helper.rb')
-        login(user)
-      end
-
-      it 'hasn`t attachment' do
-        delete :delete_attachment, params: { question_id: question.id, file_id: question.files.first.id }, format: :js
-        expect(assigns(:question).files.attached?).to be false
-      end
-
-      it 'renders delete_attachment.js.erb' do
-        delete :delete_attachment, params: { question_id: question.id, file_id: question.files.first.id }, format: :js
-        expect(response).to render_template :delete_attachment
-      end
-    end
-    context 'Question doesn`t belong to user' do
-      let!(:question) { create(:question) }
-      let!(:user) { create(:user) }
-
-      before do
-       question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename:'rails_helper.rb')
-       login(user) 
-      end
-
-      it 'has attachment' do
-        delete :delete_attachment, params: { question_id: question.id, file_id: question.files.first.id }, format: :js
-        expect(assigns(:question).files.attached?).to eq true
-      end
-
-      it 'renders delete_attachment.js.erb' do
-        delete :delete_attachment, params: { question_id: question.id, file_id: question.files.first.id }, format: :js
-        expect(flash[:notice]).to eq 'You must be author to delete attachment'
-      end
-    end
-  end
-
   describe 'PATCH #mark_best' do
     context 'Question belongs to user' do
       let!(:question) { create(:question, :with_answer) }
