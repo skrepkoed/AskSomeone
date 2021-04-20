@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   resources :questions do
     patch 'mark_best/:answer_id', to: 'questions#mark_best', as: :mark_best
     delete 'delete_attachment/:file_id', to: 'questions#delete_attachment', as: :delete_attachment
-    resources :answers, shallow: true
+    resources :answers, shallow: true do
+      delete 'delete_attachment/:file_id', to: 'answers#delete_attachment', as: :delete_attachment
+    end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

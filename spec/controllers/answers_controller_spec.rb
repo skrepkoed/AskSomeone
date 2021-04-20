@@ -53,6 +53,46 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'DELETE #delete_attachment' do
+    context 'Answer belongs to user' do
+      let!(:answer) { create(:answer) }
+      let!(:user) { answer.author }
+      before do 
+        answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename:'rails_helper.rb')
+        login(user)
+      end
+
+      it 'hasn`t attachment' do
+        delete :delete_attachment, params: { answer_id: answer.id, file_id: answer.files.first.id }, format: :js
+        expect(assigns(:answer).files.attached?).to be false
+      end
+
+      it 'renders delete_attachment.js.erb' do
+        delete :delete_attachment, params: { answer_id: answer.id, file_id: answer.files.first.id }, format: :js
+        expect(response).to render_template :delete_attachment
+      end
+    end
+    context 'Question doesn`t belong to user' do
+      let!(:answer) { create(:answer) }
+      let!(:user) { create(:user) }
+
+      before do
+       answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename:'rails_helper.rb')
+       login(user) 
+      end
+
+      it 'has attachment' do
+        delete :delete_attachment, params: { answer_id: answer.id, file_id: answer.files.first.id }, format: :js
+        expect(assigns(:answer).files.attached?).to eq true
+      end
+
+      it 'renders delete_attachment.js.erb' do
+        delete :delete_attachment, params: { answer_id: answer.id, file_id: answer.files.first.id }, format: :js
+        expect(flash[:notice]).to eq 'You must be author to delete attachment'
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     context 'answer belongs to user' do
       let!(:answer) { create(:answer) }

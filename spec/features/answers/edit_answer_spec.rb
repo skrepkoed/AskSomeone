@@ -39,6 +39,24 @@ I`d like to visit question`s show page and edit my answer' do
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
       end
+
+      describe 'Delete attachment', js: true do 
+        given(:answer) { create(:answer) }
+        given(:user) { answer.author }
+        
+        background do
+          answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename:'rails_helper.rb')
+          visit question_path(answer.question)
+        end 
+        
+        scenario 'User can delete attached file' do
+          expect(page).to have_link 'rails_helper.rb'
+          within all('.answer').first do
+            click_on 'Delete attachment'
+          end
+          expect(page).to_not have_link 'rails_helper.rb'
+        end
+      end
     end
 
     describe "User hasn't answered this question before" do
@@ -67,6 +85,20 @@ I`d like to visit question`s show page and edit my answer' do
 
     scenario 'User can`t edit another answers', js: true do
       expect(page).to_not have_content 'Edited Answer'
+    end
+
+    describe 'Delete attachment', js: true do 
+      given(:answer) { create(:answer) }
+      given(:user) { create(:user) }
+      
+      background do
+        question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename:'rails_helper.rb')
+        visit question_path(answer.question)
+      end 
+      
+      scenario 'User can`t delete attached file' do
+        expect(page).to_not have_link "Delete attachment"
+      end
     end
   end
 end

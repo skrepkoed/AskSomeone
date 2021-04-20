@@ -37,6 +37,17 @@ class AnswersController < ApplicationController
     end
   end
 
+  def delete_attachment
+    @answer = Answer.find(params[:answer_id])
+    @file_id = params[:file_id]
+    
+    if current_user.author?(@answer)
+      @answer.files.find(params[:file_id]).purge
+    else
+      flash[:notice] = 'You must be author to delete attachment'
+    end
+  end
+
   private
 
   def params_answer

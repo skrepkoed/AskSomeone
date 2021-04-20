@@ -4,9 +4,11 @@ li.answer id="answer-#{answer.id}"
   = answer.body
   br
   - if answer.files.attached?
-    - answer.files.each do |file|
-      p
-        = link_to file.filename.to_s, url_for(file)
+    - if current_user&.author?(answer)
+      - answer.files.each do |file|
+        p id="answer-file-id-#{file.id}"
+          = link_to file.filename.to_s, url_for(file)
+          = link_to 'Delete attachment', answer_delete_attachment_path(answer, file), method: :delete, remote: true
   - if current_user&.author?(answer)
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
     br
