@@ -5,9 +5,15 @@ div.question id="question-#{question.id}"
     = "Author: #{question.author.email}"
   p
     = question.body
+  - if current_user&.author?(question)  
+    -if question.files.attached?
+      - question.files.each do |file|
+        p id="attachment-id-#{file.id}"
+          = link_to file.filename.to_s, url_for(file)
+          = link_to 'Delete attachment', question_attachment_path(question, file), method: :delete, remote: true
 
   p
-    - if current_user && current_user.author?(question)
+    - if current_user&.author?(question)
       = link_to 'Delete question', question_path(question), method: :delete
       br
       = link_to 'Edit question','#', class: 'edit-question-link', data: { question_id: question.id }

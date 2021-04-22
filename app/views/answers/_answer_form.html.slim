@@ -4,5 +4,9 @@
   br
     = answer.text_area :body
   br
+  p
+    = answer.label :files
+  br
+    = answer.file_field :files, multiple:true
   p 
     = answer.submit 'Answer'

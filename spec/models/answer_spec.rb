@@ -13,6 +13,10 @@ RSpec.describe Answer, type: :model do
     it { should belong_to(:author).class_name('User') }
   end
 
+  it 'should have many attached files' do
+    expect(Answer.new.files).to be_an_instance_of ActiveStorage::Attached::Many 
+  end
+
   describe 'validations' do
     subject { build(:answer) }
 

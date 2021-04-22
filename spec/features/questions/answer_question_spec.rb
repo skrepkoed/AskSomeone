@@ -22,9 +22,16 @@ feature 'Authenticated user can answer the question at question`s show page', '
       expect(page).to_not have_content('Nobody has answered this question yet')
     end
 
+    scenario 'answer question and attach several files', js:true do
+      fill_in 'Body', with: 'Question body?'
+      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      click_on 'Answer'
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
+
     scenario 'answer question with invalid parameters', js: true do
       click_on 'Answer'
-      wait_for_ajax
       expect(page).to have_content("Body can't be blank")
     end
   end
