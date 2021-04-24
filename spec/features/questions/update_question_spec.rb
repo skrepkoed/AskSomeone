@@ -50,6 +50,29 @@ feature 'User can update question',
         expect(page).to have_link 'spec_helper.rb'
       end
       
+      describe 'Delete link', js:true do
+        
+        given!(:question) { create(:question) }
+        given!(:link1){ create(:link, linkable_type: 'Question', linkable_id: question.id) }
+        given!(:link2){ create(:link, linkable_type:'Question', linkable_id: question.id) }
+        given!(:user) { question.author }
+        background{visit question_path(question)}
+        scenario 'User can delete links while update' do
+          expect(page).to have_content 'MyUrl1'
+          expect(page).to have_content 'MyUrl2'
+          
+          click_on 'Edit question'
+          
+          within all(".question_edit_hidden #links .nested-fields").last do
+            click_on 'remove link'
+          end
+          
+          click_on 'Edit'
+          
+          expect(page).to_not have_content 'MyUrl2'
+        end
+      end
+      
       describe 'Delete attachment', js: true do 
         given(:question) { create(:question) }
         given(:user) { question.author }
@@ -78,7 +101,7 @@ feature 'User can update question',
         visit question_path(question)
       end
 
-      scenario 'User can`t another question', js: true do
+      scenario 'User can`t edit another question', js: true do
         
         within "#question-#{question.id}" do
           expect(page).to_not have_link 'Edit question'
