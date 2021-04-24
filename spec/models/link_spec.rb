@@ -14,5 +14,7 @@ RSpec.describe Answer, type: :model do
   describe 'validations' do
     it {should validate_presence_of :name}
     it {should validate_presence_of :url}
+    it {should allow_value('https://www.google.com/').for(:url)}
+    it {should_not allow_value('h/www.\googlecom/').for(:url)}
   end
 end
