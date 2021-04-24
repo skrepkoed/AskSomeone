@@ -856,6 +856,11 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
+"@oddcamp/cocoon-vanilla-js@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@oddcamp/cocoon-vanilla-js/-/cocoon-vanilla-js-1.1.2.tgz#2b05b584802b36b95722eaf346a54ed43d822a1a"
+  integrity sha512-X0gW+cSAMH8j/BCWT9JS6gH4qbfvWmuLGIT0DWyo/Sop7GKwG+qzwURZVVdUVkYjg0+duxUg3n9P6W7FHNcpgQ==
+
 "@rails/actioncable@^6.0.0":
   version "6.1.3"
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.1.3.tgz#c8a67ec4d22ecd6931f7ebd98143fddbc815419a"
@@ -2893,11 +2898,6 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   integrity sha1-l+gBqgUt8CRU3kawK/YhZCzchQI=
   dependencies:
     homedir-polyfill "^1.0.1"
-
-expose-loader@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/expose-loader/-/expose-loader-2.0.0.tgz#1c323577db3d16f7817e4652024f2c545b3f6a70"
-  integrity sha512-WBpSGlNkn7YwbU2us7O+h0XsoFrB43Y/VCNSpRV4OZFXXKgw8W800BgNxLV0S97N3+KGnFYSCAJi1AV86NO22w==
 
 express@^4.17.1:
   version "4.17.1"

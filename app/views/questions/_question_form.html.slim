@@ -5,6 +5,11 @@
   p
     = question.label :body
     = question.text_area :body
+  #links
+    = question.fields_for :links do |link|
+      = render 'shared/link_fields', f: link
+    .links
+      = link_to_add_association 'Add link', question, :links, partial: 'shared/link_fields'
   p
     = question.label :files
     = question.file_field :files, multiple: true, direct_upload: true

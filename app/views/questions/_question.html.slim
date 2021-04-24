@@ -5,6 +5,10 @@ div.question id="question-#{question.id}"
     = "Author: #{question.author.email}"
   p
     = question.body
+  p
+    ul
+      - question.links.each do |link|
+        = link_to link.name, url_for(link.url), target: "_blank"
   - if current_user&.author?(question)  
     -if question.files.attached?
       - question.files.each do |file|

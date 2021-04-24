@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
   before_action :set_question, only: %i[show destroy edit update]
   def new
     @question = current_user.questions.new
+    @question.links.new
   end
 
   def create
@@ -57,7 +58,7 @@ class QuestionsController < ApplicationController
   private
 
   def params_question
-    params.require(:question).permit(:title, :body, files:[])
+    params.require(:question).permit(:title, :body, files:[], links_attributes:[:id, :name, :url, :_destroy])
   end
 
   def set_question
