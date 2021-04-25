@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User can add links to his question',
  %q{In order to add links to question
   As authenticated user I`d like to be able 
-  to and add link while asking question} do
+  to ask question and add link while asking question} do
   
   given(:user){create(:user)}
   given(:url){'https://www.google.com'}

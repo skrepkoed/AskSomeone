@@ -4,11 +4,13 @@ class QuestionsController < ApplicationController
   def new
     @question = current_user.questions.new
     @question.links.new
+    @question.build_achievement
   end
 
   def create
     @question = current_user.questions.new(params_question)
     if @question.save
+      current_user.associate_achievement(@question.achievement)
       flash[:notice] = 'Your question successfully created.'
       redirect_to @question
     else
@@ -58,7 +60,7 @@ class QuestionsController < ApplicationController
   private
 
   def params_question
-    params.require(:question).permit(:title, :body, files:[], links_attributes:[:id, :name, :url, :_destroy])
+    params.require(:question).permit(:title, :body, files:[], links_attributes:[:id, :name, :url, :_destroy],achievement_attributes:[:id,:name,:description,:_destroy,:file])
   end
 
   def set_question
