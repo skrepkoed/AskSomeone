@@ -18,7 +18,7 @@ RSpec.describe Question, type: :model do
   end
 
   it 'has many attached file' do
-    expect(Question.new.files).to be_an_instance_of ActiveStorage::Attached::Many 
+    expect(Question.new.files).to be_an_instance_of ActiveStorage::Attached::Many
   end
 
   describe 'validations' do

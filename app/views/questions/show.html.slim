@@ -23,6 +23,7 @@ ul.answers
   	p.no_answers Nobody has answered this question yet
 
 - if current_user
+  h1 New Answer
   div.new_answer_container
   	div.new_answer 
   	  = render '/answers/answer_form', answer: [@question, @answer]

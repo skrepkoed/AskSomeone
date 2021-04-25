@@ -136,7 +136,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     let!(:question) { create(:question) }
-    let!(:user){ question.author }
+    let!(:user) { question.author }
 
     before { login(user) }
 
@@ -166,7 +166,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'Question doesn`t belong to user' do |variable|
+    context 'Question doesn`t belong to user' do |_variable|
       let!(:question) { create(:question) }
       let!(:user) { create(:user) }
       before { login(user) }

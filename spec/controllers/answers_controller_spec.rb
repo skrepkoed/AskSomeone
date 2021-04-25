@@ -100,7 +100,7 @@ RSpec.describe AnswersController, type: :controller do
     let!(:user) { answer.author }
 
     before { login(user) }
-    
+
     context 'with valid attributes' do
       it 'changes answer attributes' do
         patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js

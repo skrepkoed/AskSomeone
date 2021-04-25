@@ -5,6 +5,12 @@
     = answer.text_area :body
   br
   p
+    #new-answer-links
+      = answer.fields_for :links do |link|
+        = render 'shared/link_fields', f: link
+      .answer-links
+        = link_to_add_association 'Add link', answer, :links, partial: 'shared/link_fields'
+  p
     = answer.label :files
   br
     = answer.file_field :files, multiple:true

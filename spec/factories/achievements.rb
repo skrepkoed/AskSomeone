@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :achievement do
-    name { "MyString" }
-    description { "MyString" }
+    name { 'My Achievement' }
+    description { 'My description' }
   end
 end
