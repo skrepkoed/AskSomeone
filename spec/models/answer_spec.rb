@@ -31,7 +31,7 @@ RSpec.describe Answer, type: :model do
         let!(:question) { answer.question }
 
         it 'should be the best answer' do
-          question.mark_best_answer(answer.id)
+          question.mark_best_answer(answer)
           expect(answer.best_answer?).to be true
         end
       end
@@ -51,7 +51,7 @@ RSpec.describe Answer, type: :model do
       let(:question) { answer.question }
 
       it 'should be the best answer' do
-        question.mark_best_answer(answer.id)
+        question.mark_best_answer(answer)
         answer.destroy
         expect(question.best_answer).to be nil
       end

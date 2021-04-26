@@ -10,12 +10,12 @@ I`d like to recieve an achivement and get list of achievements ' do
 
   given!(:answer) { create(:answer, :for_create, user_id: user1.id, question_id: question.id) }
   given!(:img_path) { "#{Rails.root}/public/apple-touch-icon.png" }
-  given!(:achievement) { create(:achievement, user_role: 'questioner', user_id: user2.id, question_id: question.id) }
+  given!(:achievement) { create(:achievement, user_id: user2.id, question_id: question.id) }
   given!(:img) { fixture_file_upload(img_path) }
 
   background do
     achievement.file.attach(img)
-    question.mark_best_answer(answer.id)
+    question.mark_best_answer(answer)
 
     sign_in(user1)
     visit achievements_path

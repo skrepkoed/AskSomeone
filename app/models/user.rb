@@ -8,16 +8,11 @@ class User < ApplicationRecord
   has_many :achievements
 
   def earned_achievements
-    achievements.where(user_role: 'answerer')
+    achievements.joins(:question).where.not(questions:{ user_id: id })
   end
 
   def associate_achievement(achievement)
     achievements << achievement if achievement
-  end
-
-  def give_achievement(answer_id, achievement)
-    reciever = Answer.find(answer_id).author
-    achievement.update(user_id: reciever.id, user_role: 'answerer')
   end
 
   def author?(resource)

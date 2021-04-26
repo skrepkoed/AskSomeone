@@ -13,8 +13,9 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
   validates :body, length: { minimum: 5 }
 
-  def mark_best_answer(answer_id)
-    author.give_achievement(answer_id, achievement) if achievement
-    update(best_answer_id: answer_id)
+  def mark_best_answer(answer)
+    achievement.user= answer.author if achievement
+    self.best_answer= answer
+    self.save
   end
 end

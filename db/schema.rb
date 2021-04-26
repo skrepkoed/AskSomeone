@@ -19,11 +19,10 @@ ActiveRecord::Schema.define(version: 2021_04_25_051941) do
     t.string "name"
     t.string "description"
     t.bigint "user_id"
-    t.string "user_role", default: "questioner"
     t.bigint "question_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["question_id"], name: "index_achievements_on_question_id"
+    t.index ["question_id"], name: "index_achievements_on_question_id", unique: true
     t.index ["user_id"], name: "index_achievements_on_user_id"
   end
 

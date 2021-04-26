@@ -48,7 +48,7 @@ RSpec.describe User, type: :model do
           expect { user.associate_achievement(achievement) }.to change(user.achievements, :count).by(1)
         end
       end
-      context 'Achievement nill' do
+      context 'Achievement nil' do
         let(:user) { create(:user) }
         let(:question) { create(:question, user_id: user.id) }
         let(:achievement) { nil }
@@ -56,18 +56,6 @@ RSpec.describe User, type: :model do
         it 'associate achievement with user' do
           expect { user.associate_achievement(achievement) }.to_not change(user.achievements, :count)
         end
-      end
-    end
-
-    describe 'give_achievement give_achievement to user which answer is the best' do
-      let(:user1) { create(:user) }
-      let(:user2) { create(:user) }
-      let(:question) { create(:question, user_id: user1.id) }
-      let(:achievement) { create(:achievement, question_id: question.id, user_id: user1.id) }
-      let(:answer) { create(:answer, user_id: user2.id, question_id: question.id) }
-
-      it 'gives achievement to user' do
-        expect { user1.give_achievement(answer.id, achievement) }.to change(user2.earned_achievements, :count).by(1)
       end
     end
   end

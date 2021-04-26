@@ -41,8 +41,9 @@ class QuestionsController < ApplicationController
   def mark_best
     @question = Question.find(params[:question_id])
     @former_best_answer = @question.best_answer
+    @answer = Answer.find(params[:answer_id])
     if current_user.author?(@question)
-      @question.mark_best_answer(params[:answer_id])
+      @question.mark_best_answer(@answer)
     else
       flash[:notice] = 'You must be author to mark answer as best'
     end

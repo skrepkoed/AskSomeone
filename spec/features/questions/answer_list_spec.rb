@@ -6,7 +6,7 @@ feature 'Someone can get list of answers', '
     given(:question) { create(:question, :with_answer) }
     given(:expected_answers) { question.answers.pluck(:body) }
 
-    background { question.mark_best_answer(question.answers.first.id) }
+    background { question.mark_best_answer(question.answers.first) }
 
     scenario 'get list of answers on question`s show page' do
       visit question_path(question)

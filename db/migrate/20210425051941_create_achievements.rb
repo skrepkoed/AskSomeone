@@ -4,8 +4,7 @@ class CreateAchievements < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :description
       t.belongs_to :user, foreign_key: true
-      t.string :user_role, default: 'questioner'
-      t.belongs_to :question, foreign_key: true, unique: true
+      t.belongs_to :question, foreign_key: true, index: {unique: true}
       t.timestamps
     end
   end
