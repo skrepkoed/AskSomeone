@@ -37,5 +37,26 @@ RSpec.describe User, type: :model do
         end
       end
     end
+
+    describe 'associate_achievement associate achievement if it`s not nil' do
+      context 'Achievement not nill' do
+        let(:user) { create(:user) }
+        let(:question) { create(:question, user_id: user.id) }
+        let(:achievement) { create(:achievement, question_id: question.id) }
+
+        it 'associate achievement with user' do
+          expect { user.associate_achievement(achievement) }.to change(user.achievements, :count).by(1)
+        end
+      end
+      context 'Achievement nil' do
+        let(:user) { create(:user) }
+        let(:question) { create(:question, user_id: user.id) }
+        let(:achievement) { nil }
+
+        it 'associate achievement with user' do
+          expect { user.associate_achievement(achievement) }.to_not change(user.achievements, :count)
+        end
+      end
+    end
   end
 end

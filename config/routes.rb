@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'achievements/index', to: 'achievements#index', as: :achievements
   devise_for :users
   root to: 'questions#index'
   concern :attachable do

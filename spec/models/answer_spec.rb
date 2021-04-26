@@ -11,10 +11,11 @@ RSpec.describe Answer, type: :model do
 
     it { should belong_to(:question) }
     it { should belong_to(:author).class_name('User') }
+    it { should have_many(:links).dependent(:destroy) }
   end
 
   it 'should have many attached files' do
-    expect(Answer.new.files).to be_an_instance_of ActiveStorage::Attached::Many 
+    expect(Answer.new.files).to be_an_instance_of ActiveStorage::Attached::Many
   end
 
   describe 'validations' do
@@ -24,37 +25,35 @@ RSpec.describe Answer, type: :model do
   end
 
   describe 'instance methods' do
-    
     describe 'best_answer?' do
-      
-      context 'answer is the best' do 
-          let!(:answer){create(:answer)}
-          let!(:question){answer.question}
-          
+      context 'answer is the best' do
+        let!(:answer) { create(:answer) }
+        let!(:question) { answer.question }
+
         it 'should be the best answer' do
-          question.mark_best_answer(answer.id)
-          expect(answer.best_answer?).to be true 
+          question.mark_best_answer(answer)
+          expect(answer.best_answer?).to be true
         end
       end
-      
+
       context 'answer isn`t best' do
-          let(:answer){create(:answer)}
-          let(:question){answer.question}
-        
+        let(:answer) { create(:answer) }
+        let(:question) { answer.question }
+
         it 'should be the best answer' do
-          expect(answer.best_answer?).to be false 
+          expect(answer.best_answer?).to be false
         end
       end
     end
 
     describe 'before_destroy callback' do
-        let(:answer){create(:answer)}
-        let(:question){answer.question}
-      
+      let(:answer) { create(:answer) }
+      let(:question) { answer.question }
+
       it 'should be the best answer' do
-        question.mark_best_answer(answer.id)
+        question.mark_best_answer(answer)
         answer.destroy
-        expect(question.best_answer).to be nil 
+        expect(question.best_answer).to be nil
       end
     end
   end

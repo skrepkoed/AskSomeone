@@ -16,15 +16,15 @@ class AnswersController < ApplicationController
       @answers = @question.answers.all
       flash.now[:errors] = @answer.errors.full_messages
     end
-    @new_answer=Answer.new
+    @new_answer = Answer.new
   end
-  
+
   def update
     if current_user.author?(@answer)
       @answer.update(params_answer)
       flash.now[:errors] = @answer.errors.full_messages
     else
-      flash.now[:notice] ='You must be author to edit'
+      flash.now[:notice] = 'You must be author to edit'
     end
   end
 
@@ -40,7 +40,7 @@ class AnswersController < ApplicationController
   private
 
   def params_answer
-    params.require(:answer).permit(:body, files:[])
+    params.require(:answer).permit(:body, files: [], links_attributes: %i[id name url _destroy])
   end
 
   def set_answer

@@ -1,0 +1,9 @@
+.achievement id=achievement.id
+  p 
+    = achievement.name
+  p
+    = achievement.question.title
+  p 
+    = image_tag url_for(achievement.file), size:"250x150"
+
+  br 

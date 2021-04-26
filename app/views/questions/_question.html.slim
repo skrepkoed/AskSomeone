@@ -5,6 +5,23 @@ div.question id="question-#{question.id}"
     = "Author: #{question.author.email}"
   p
     = question.body
+  p
+    ul.question-links
+      - question.links.each do |link|
+        -if link.gist?
+          li.gist-link
+            = javascript_include_tag link.url+".js"
+        -else
+          li
+            = link_to link.name, url_for(link.url), target: "_blank"
+  -if question.achievement
+    p.achievement
+      = question.achievement.name
+      br
+      = question.achievement.description
+      br
+      -if question.achievement.file.attached?
+        = image_tag url_for(question.achievement.file), size:"250x150"
   - if current_user&.author?(question)  
     -if question.files.attached?
       - question.files.each do |file|

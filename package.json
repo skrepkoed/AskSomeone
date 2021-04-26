@@ -2,19 +2,20 @@
   "name": "AskSomeone",
   "private": true,
   "dependencies": {
+    "@oddcamp/cocoon-vanilla-js": "^1.1.2",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.3.0",
     "activestorage": "^5.2.5",
     "bootstrap": "^4.6.0",
+    "gist-client": "^1.1.1",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
   "devDependencies": {
-    "expose-loader": "^2.0.0",
     "webpack-dev-server": "^3.11.2"
   }
 }
