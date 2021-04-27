@@ -31,7 +31,7 @@ div.question id="question-#{question.id}"
   p.rating
     = "Rating: #{@question.rating.rating}"
   br
-  - if !current_user&.author?(question)
+  - if current_user && !(current_user&.author?(question))
     = link_to 'Vote pro', question_pro_path(@question, @question.rating), class: 'rating-link', method: :post, data:{type: :json}, remote: true
 
   p
