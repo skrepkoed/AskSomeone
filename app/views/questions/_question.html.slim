@@ -28,6 +28,11 @@ div.question id="question-#{question.id}"
         p id="attachment-id-#{file.id}"
           = link_to file.filename.to_s, url_for(file)
           = link_to 'Delete attachment', question_attachment_path(question, file), method: :delete, remote: true
+  p.rating
+    = "Rating: #{@question.rating.rating}"
+  br
+  - if !current_user&.author?(question)
+    = link_to 'Vote pro', question_pro_path(@question, @question.rating), class: 'rating-link', method: :post, data:{type: :json}, remote: true
 
   p
     - if current_user&.author?(question)

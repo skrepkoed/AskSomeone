@@ -5,7 +5,12 @@ Rails.application.routes.draw do
   concern :attachable do
     resources :attachments, only:[:destroy]
   end
-  resources :questions, concerns: :attachable do
+
+  concern :votable do
+    post 'rating/pro/:id', to: 'ratings#pro', as: :pro
+    post 'rating/con/:id', to:'ratings#con', as: :con
+  end
+  resources :questions, concerns: [:attachable, :votable] do
     patch 'mark_best/:answer_id', to: 'questions#mark_best', as: :mark_best
     resources :answers,  shallow: true do
       delete 'attachments/:id', to: 'attachments#destroy', as: :attachment
