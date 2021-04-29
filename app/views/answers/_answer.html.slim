@@ -19,6 +19,16 @@ li.answer id="answer-#{answer.id}"
         p id="attachment-id-#{file.id}"
           = link_to file.filename.to_s, url_for(file)
           = link_to 'Delete attachment', answer_attachment_path(answer, file), method: :delete, remote: true
+  br
+  p.rating
+    = "Rating: #{answer.rating.rating}"
+    p.rating-message
+  br
+  - if current_user && !(current_user&.author?(answer))
+    = link_to "#{ answer.rating.voted?(current_user,1) || "Vote pro" }", answer_pro_path(answer, answer.rating), class: 'rating-link rating-link-pro', method: :post, data:{type: :json}, remote: true
+    br
+    = link_to "#{ answer.rating.voted?(current_user,-1) || "Vote con" }", answer_con_path(answer, answer.rating), class: 'rating-link rating-link-con', method: :post, data:{type: :json}, remote: true
+  br
   - if current_user&.author?(answer)
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
     br

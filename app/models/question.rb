@@ -15,8 +15,8 @@ class Question < ApplicationRecord
   validates :body, length: { minimum: 5 }
 
   def mark_best_answer(answer)
-    achievement.user= answer.author if achievement
-    self.best_answer= answer
-    self.save
+    achievement.user = answer.author if achievement
+    self.best_answer = answer
+    save
   end
 end

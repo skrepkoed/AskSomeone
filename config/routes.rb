@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
   resources :questions, concerns: [:attachable, :votable] do
     patch 'mark_best/:answer_id', to: 'questions#mark_best', as: :mark_best
-    resources :answers,  shallow: true do
+    resources :answers, concerns: :votable,  shallow: true do
       delete 'attachments/:id', to: 'attachments#destroy', as: :attachment
     end
   end

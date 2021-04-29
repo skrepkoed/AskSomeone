@@ -6,8 +6,8 @@ class Rating < ApplicationRecord
 
   def voted?(user, variant)
     vote = find_user_vote(user)
-    if vote.persisted? 
-      vote.voted(variant)      
+    if vote.persisted?
+      vote.voted(variant)
     else
       false
     end
