@@ -19,6 +19,20 @@ feature 'User can vote for answer or question',
         click_on 'Vote pro'
         expect(page).to have_content 'Rating: 1'
       end
+
+      scenario 'User can`t vote twice with same variant' do
+        click_on 'Vote pro'
+        click_on 'Voted'
+        expect(page).to have_content 'You can vote only once'
+      end
+
+      scenario 'User can unvote and vote again', js:true do
+        click_on 'Vote pro'
+        click_on 'Revote'
+        expect(page).to have_content 'Rating: 0'
+        click_on 'Vote con'
+        expect(page).to have_content 'Rating: -1'
+      end
     end
 
     describe 'User can`t vote for his own question' do
@@ -46,7 +60,7 @@ feature 'User can vote for answer or question',
         visit question_path(question)
       end
 
-      scenario 'User vote for question and counter increments' do
+      scenario 'User vote for question and counter doesn`t increment' do
         expect(page).to have_content 'Rating: 0'
         expect(page).to_not have_content 'Vote pro'
       end

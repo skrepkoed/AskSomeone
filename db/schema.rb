@@ -99,15 +99,14 @@ ActiveRecord::Schema.define(version: 2021_04_26_161949) do
   end
 
   create_table "votes", force: :cascade do |t|
-    t.integer "vote"
+    t.integer "variant"
     t.bigint "user_id", null: false
-    t.string "votable_type"
-    t.bigint "votable_id"
+    t.bigint "rating_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["rating_id", "user_id"], name: "index_votes_on_rating_id_and_user_id", unique: true
+    t.index ["rating_id"], name: "index_votes_on_rating_id"
     t.index ["user_id"], name: "index_votes_on_user_id"
-    t.index ["votable_type", "votable_id", "user_id"], name: "index_votes_on_votable_type_and_votable_id_and_user_id", unique: true
-    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
   end
 
   add_foreign_key "achievements", "questions"
@@ -116,5 +115,6 @@ ActiveRecord::Schema.define(version: 2021_04_26_161949) do
   add_foreign_key "answers", "users"
   add_foreign_key "questions", "answers", column: "best_answer_id"
   add_foreign_key "questions", "users"
+  add_foreign_key "votes", "ratings"
   add_foreign_key "votes", "users"
 end

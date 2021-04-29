@@ -1,9 +1,9 @@
 class CreateVotes < ActiveRecord::Migration[6.0]
   def change
     create_table :votes do |t|
-      t.integer :vote
+      t.integer :variant
       t.references :user, null: false, foreign_key: true
-      t.references :votable, polymorphic:true
+      t.references :rating, null: false, foreign_key: true
       t.timestamps
     end
   end

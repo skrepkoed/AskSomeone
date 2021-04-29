@@ -10,6 +10,11 @@ RSpec.describe RatingsController, type: :controller do
   end
 
   describe 'POST #pro' do
+    before do 
+      login(user)
+      post :pro, params: { question_id: question.id, id:question.rating.id }, format: :json
+    end
+    
     it 'responds with 201 status' do
       expect(response.status).to eq(200)  
     end
@@ -17,6 +22,20 @@ RSpec.describe RatingsController, type: :controller do
     it 'responds with json' do
       expect(JSON.parse(response.body)).to be_kind_of(Hash)
     end
+  end
+
+  describe 'POST #con' do
+    before do 
+      login(user)
+      post :con, params: { question_id: question.id, id:question.rating.id }, format: :json
+    end
     
+    it 'responds with 201 status' do
+      expect(response.status).to eq(200)  
+    end
+
+    it 'responds with json' do
+      expect(JSON.parse(response.body)).to be_kind_of(Hash)
+    end
   end
 end
