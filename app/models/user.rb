@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :achievements
 
   def earned_achievements
-    achievements.joins(:question).where.not(questions:{ user_id: id })
+    achievements.joins(:question).where.not(questions: { user_id: id })
   end
 
   def associate_achievement(achievement)

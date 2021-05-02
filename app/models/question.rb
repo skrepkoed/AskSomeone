@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
+  has_one :rating, dependent: :destroy, as: :ratingable
   has_one :achievement
   belongs_to :best_answer, class_name: 'Answer', optional: true
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'
@@ -14,8 +15,8 @@ class Question < ApplicationRecord
   validates :body, length: { minimum: 5 }
 
   def mark_best_answer(answer)
-    achievement.user= answer.author if achievement
-    self.best_answer= answer
-    self.save
+    achievement.user = answer.author if achievement
+    self.best_answer = answer
+    save
   end
 end

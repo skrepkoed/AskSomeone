@@ -10,6 +10,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(params_answer)
     @answer.author = current_user
     if @answer.save
+      @answer.create_rating
       @answers = @question.answers
       flash.now[:notice] = 'Your answer was accepted'
     else

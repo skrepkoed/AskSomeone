@@ -11,6 +11,7 @@ class QuestionsController < ApplicationController
     @question = current_user.questions.new(params_question)
     if @question.save
       current_user.associate_achievement(@question.achievement)
+      @question.create_rating
       flash[:notice] = 'Your question successfully created.'
       redirect_to @question
     else
