@@ -1,0 +1,14 @@
+class QuestionChannel < ApplicationCable::Channel
+  def subscribed
+    # stream_from "some_channel"
+  end
+
+  def follow_question(data)
+    question =  Question.find(data['question_id'].to_i)
+    stream_for question
+  end
+
+  def unsubscribed
+    # Any cleanup needed when channel is unsubscribed
+  end
+end

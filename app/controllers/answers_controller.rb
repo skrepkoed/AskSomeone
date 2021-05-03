@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: %i[create]
   before_action :set_answer, only: %i[destroy edit update]
+  after_action :publish_answer, only: %i[create]
   def new
     @answer = Answer.new
   end
@@ -17,6 +18,7 @@ class AnswersController < ApplicationController
       @answers = @question.answers.all
       flash.now[:errors] = @answer.errors.full_messages
     end
+
     @new_answer = Answer.new
   end
 
@@ -50,5 +52,19 @@ class AnswersController < ApplicationController
 
   def set_question
     @question ||= Question.with_attached_files.find(params[:question_id])
+  end
+
+  def publish_answer
+    return unless @answer.valid?
+    for_current_user = ApplicationController.render(
+        partial: 'answers/answer',
+        locals: { answer: @answer, current_user: current_user }
+      )
+    for_users = ApplicationController.render(
+        partial: 'answers/answer_public',
+        locals: { answer: @answer }
+      )
+    variants={for_current_user: for_current_user, for_users: for_users, id:current_user.id}
+    QuestionChannel.broadcast_to(@answer.question, variants )
   end
 end

@@ -1,0 +1,27 @@
+li.answer id="answer-#{answer.id}"
+  = "Author: #{answer.author.email}" 
+  br
+  = answer.body
+  br
+  p
+    ul.answer-links
+      - answer.links.each do |link|
+        -if link.gist?
+          li.gist-link
+            = javascript_include_tag link.url+".js"
+        -else
+          li
+            = link_to link.name, url_for(link.url), target: "_blank"
+  br
+  - if answer.files.attached?
+    - answer.files.each do |file|
+      p id="attachment-id-#{file.id}"
+        = link_to file.filename.to_s, url_for(file)
+  br
+  p.rating
+    = "Rating: #{answer.rating.rating}"
+    p.rating-message
+  br
+  = link_to "#{ "Vote pro" }", answer_pro_path(answer, answer.rating), class: 'rating-link rating-link-pro', method: :post, data:{type: :json}, remote: true
+  br
+  = link_to "#{ "Vote con" }", answer_con_path(answer, answer.rating), class: 'rating-link rating-link-con', method: :post, data:{type: :json}, remote: true

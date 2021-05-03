@@ -25,6 +25,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    gon.user= current_user&.id
     set_new_answer if current_user
     @answers = @question.answers.where.not(id: @question.best_answer_id)
     @best_answer = @question.best_answer
