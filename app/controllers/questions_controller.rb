@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show destroy edit update]
+  after_action :publish_question, only: %i[create]
   def new
     @question = current_user.questions.new
     @question.links.new
@@ -25,7 +26,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    gon.user= current_user&.id
+    gon.user = current_user&.id
     set_new_answer if current_user
     @comment = Comment.new
     @answers = @question.answers.where.not(id: @question.best_answer_id)
@@ -62,6 +63,17 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    return unless @question.valid?
+
+    question_item_partial = ApplicationController.render(
+      partial: 'questions/question_item',
+      locals: { question: @question }
+    )
+    question_item = { question_item_partial: question_item_partial }
+    ActionCable.server.broadcast('questions_list', question_item)
+  end
 
   def params_question
     params.require(:question).permit(:title, :body, files: [], links_attributes: %i[id name url _destroy],

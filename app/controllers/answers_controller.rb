@@ -55,15 +55,16 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return unless @answer.valid?
+
     for_current_user = ApplicationController.render(
-        partial: 'answers/answer',
-        locals: { answer: @answer, current_user: current_user  }
-      )
+      partial: 'answers/answer',
+      locals: { answer: @answer, current_user: current_user }
+    )
     for_users = ApplicationController.render(
-        partial: 'answers/answer_public',
-        locals: { answer: @answer }
-      )
-    variants={for_current_user: for_current_user, for_users: for_users, id:current_user.id}
-    QuestionChannel.broadcast_to(@answer.question, variants )
+      partial: 'answers/answer_public',
+      locals: { answer: @answer }
+    )
+    variants = { for_current_user: for_current_user, for_users: for_users, id: current_user.id }
+    QuestionChannel.broadcast_to(@answer.question, variants)
   end
 end

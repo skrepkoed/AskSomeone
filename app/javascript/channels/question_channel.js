@@ -4,15 +4,19 @@ document.addEventListener('turbolinks:load', function () {
   
   consumer.subscriptions.create("QuestionChannel", {
     connected() {
-      console.log('connected')
       // Called when the subscription is ready for use on the server
       let question = document.querySelector('.question')
-      console.log(question)
+      let questions = document.querySelector('.questions')
+      console.log(questions)
       if (question) {
         let reg = /^(question-)(\d+)$/
         let id = reg.exec(question.id)[2]
         this.perform('follow_question', {question_id:id })
         console.log(id)
+      }
+
+      if (questions) {
+        this.perform('follow_questions')
       }
     },
 
@@ -22,7 +26,6 @@ document.addEventListener('turbolinks:load', function () {
 
     received(data) {
       // Called when there's incoming data on the websocket for this channel
-      console.log('recieved')
       if (data.commentable_id) {
         
         if (data.type == 'Question') {
@@ -53,7 +56,10 @@ document.addEventListener('turbolinks:load', function () {
           ratingLinks(conLink)
         }
       }
-      
+      if (data.question_item_partial) {
+        console.log('received')
+          $('.questions').append(data.question_item_partial)
+        } 
     }
   });
 })

@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :questions
   has_many :answers
-  has_many :achievements
+  has_many :achievements, dependent: :destroy
 
   def earned_achievements
     achievements.joins(:question).where.not(questions: { user_id: id })

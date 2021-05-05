@@ -8,6 +8,10 @@ class QuestionChannel < ApplicationCable::Channel
     stream_for question
   end
 
+  def follow_questions
+    stream_from 'questions_list'
+  end
+
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end

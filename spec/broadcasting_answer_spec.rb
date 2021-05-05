@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-feature 'User can automatically get new answer', 
-  %q{In order to get answer immediately as authenticated User
-    I`d like to visit question page and if 
-    someone answered question than answer appears on page  }, js:true do
-  given(:question){ create(:question) }
-  given(:user1){ question.author }
-  given(:user2){ create(:user) }
+feature 'User can automatically get new answer',
+        'In order to get answer immediately as authenticated User
+    I`d like to visit question page and if
+    someone answered question than answer appears on page  ', js: true do
+  given(:question) { create(:question) }
+  given(:user1) { question.author }
+  given(:user2) { create(:user) }
 
   background do
     Capybara.using_session('user1') do
