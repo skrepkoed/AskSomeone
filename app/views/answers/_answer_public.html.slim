@@ -25,3 +25,9 @@ li.answer id="answer-#{answer.id}"
   = link_to "#{ "Vote pro" }", answer_pro_path(answer, answer.rating), class: 'rating-link rating-link-pro', method: :post, data:{type: :json}, remote: true
   br
   = link_to "#{ "Vote con" }", answer_con_path(answer, answer.rating), class: 'rating-link rating-link-con', method: :post, data:{type: :json}, remote: true
+  br
+  div.comments_container
+    ul.comments
+      - unless answer.comments.empty?
+        = render '/shared/comment', comments: answer.comments
+    = render '/shared/comment_form', resource:answer, comment: Comment.new

@@ -44,3 +44,8 @@ div.question id="question-#{question.id}"
       = link_to 'Edit question','#', class: 'edit-question-link', data: { question_id: question.id }
     div.question_edit_hidden
       = render 'question_form', question:question
+  br
+  div.comments_container
+    ul.comments
+      = render '/shared/comment', comments: question.comments
+    = render '/shared/comment_form', resource:question, comment: question.comments.new

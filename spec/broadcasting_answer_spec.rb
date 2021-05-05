@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can autimatically get new answer', 
+feature 'User can automatically get new answer', 
   %q{In order to get answer immediately as authenticated User
     I`d like to visit question page and if 
     someone answered question than answer appears on page  }, js:true do

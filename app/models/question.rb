@@ -2,7 +2,8 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
   has_one :rating, dependent: :destroy, as: :ratingable
-  has_one :achievement
+  has_many :comments, as: :commentable, dependent: :destroy
+  has_one :achievement, dependent: :destroy
   belongs_to :best_answer, class_name: 'Answer', optional: true
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'
 

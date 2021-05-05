@@ -18,7 +18,6 @@ class AnswersController < ApplicationController
       @answers = @question.answers.all
       flash.now[:errors] = @answer.errors.full_messages
     end
-
     @new_answer = Answer.new
   end
 
@@ -58,7 +57,7 @@ class AnswersController < ApplicationController
     return unless @answer.valid?
     for_current_user = ApplicationController.render(
         partial: 'answers/answer',
-        locals: { answer: @answer, current_user: current_user }
+        locals: { answer: @answer, current_user: current_user  }
       )
     for_users = ApplicationController.render(
         partial: 'answers/answer_public',
