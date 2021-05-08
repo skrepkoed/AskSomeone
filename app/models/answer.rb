@@ -2,6 +2,7 @@ class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'
   has_many :links, dependent: :destroy, as: :linkable
+  has_many :comments, as: :commentable, dependent: :destroy
   has_many_attached :files
   has_one :rating, as: :ratingable
 

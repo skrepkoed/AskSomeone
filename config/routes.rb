@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'achievements/index', to: 'achievements#index', as: :achievements
   devise_for :users
   root to: 'questions#index'
+  
   concern :attachable do
     resources :attachments, only:[:destroy]
   end
@@ -12,7 +13,9 @@ Rails.application.routes.draw do
   end
   resources :questions, concerns: [:attachable, :votable] do
     patch 'mark_best/:answer_id', to: 'questions#mark_best', as: :mark_best
+    resources :comments, only:[:create], module: 'questions'
     resources :answers, concerns: :votable,  shallow: true do
+      resources :comments, only:[:create], module: 'answers'
       delete 'attachments/:id', to: 'attachments#destroy', as: :attachment
     end
   end

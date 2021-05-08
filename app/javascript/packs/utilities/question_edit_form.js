@@ -4,7 +4,7 @@ $(document).on('turbolinks:load', function(){
     var questionId = $(this).data('questionId');
   if ($('#question-'+questionId+' .question_edit_hidden').is(":hidden")){    
     $('#question-'+questionId+' .question_edit_hidden').show()
-    $('#question-'+questionId+' input[type=submit]').val('Edit')
+    $('#question-'+questionId+' .question_edit_hidden input[type=submit]').val('Edit')
   }else{
     $('#question-'+questionId+' .question_edit_hidden').hide()}
   })

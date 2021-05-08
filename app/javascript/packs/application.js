@@ -5,7 +5,6 @@ require("turbolinks").start();
 require("@rails/activestorage").start();
 require("channels");
 
-
 global.jQuery, global.$ = require("jquery");
 
 ActiveStorage.start();

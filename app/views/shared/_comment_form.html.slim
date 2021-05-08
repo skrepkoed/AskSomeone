@@ -1,0 +1,7 @@
+= form_with model: [resource, comment], local: false do |comment|
+  p 
+    = comment.label :body, 'Comment'
+  br
+    = comment.text_area :body
+  br
+    = comment.submit 'Comment'
