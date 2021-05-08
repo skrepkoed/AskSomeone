@@ -1,6 +1,7 @@
 $('.errors').html('<%= render 'shared/errors' %>');
 <%if @answer.persisted?%>
   $('.notice').html('<%= render 'shared/messages' %>');
+  $('.answers').append('<%= j render @answer %>')
   $('.answers .no_answers').remove()
   $('.new_answer form').remove();
   $('.new_answer').append('<%= j render 'answer_form', answer: [@question ,@new_answer] %>')

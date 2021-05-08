@@ -4,7 +4,7 @@ class QuestionChannel < ApplicationCable::Channel
   end
 
   def follow_question(data)
-    question =  Question.find(data['question_id'].to_i)
+    question =  Question.find(data['question_id'])
     stream_for question
   end
 

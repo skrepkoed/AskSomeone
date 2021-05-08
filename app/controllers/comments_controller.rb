@@ -6,7 +6,6 @@ class CommentsController < ApplicationController
     @comment.author = current_user
 
     @comment.save
-    gon.comment_id = @comment.id
   end
 
   private
