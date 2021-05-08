@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'achievements/index', to: 'achievements#index', as: :achievements
-  devise_for :users
+  devise_for :users, controllers: {omniauth_callbacks: 'oauth_callbacks'}
   root to: 'questions#index'
   
   concern :attachable do

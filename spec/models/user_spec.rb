@@ -3,12 +3,13 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   describe 'associations' do
     subject { build(:user) }
-    it { should have_many(:questions) }
-    it { should have_many(:answers) }
+    it { should have_many(:questions).dependent(:destroy) }
+    it { should have_many(:answers).dependent(:destroy) }
+    it { should have_many(:authorizations).dependent(:destroy) }
   end
 
   describe 'instance methods' do
-    describe '#author? proves that user is author of some resource ' do
+    describe '.author? proves that user is author of some resourse ' do
       context 'user is author' do
         let(:user) { create(:user) }
         let(:question) { create(:question, user_id: user.id) }
@@ -38,7 +39,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe 'associate_achievement associate achievement if it`s not nil' do
+    describe '.associate_achievement associate achievement if it`s not nil' do
       context 'Achievement not nill' do
         let(:user) { create(:user) }
         let(:question) { create(:question, user_id: user.id) }
@@ -56,6 +57,18 @@ RSpec.describe User, type: :model do
         it 'associate achievement with user' do
           expect { user.associate_achievement(achievement) }.to_not change(user.achievements, :count)
         end
+      end
+    end
+
+    describe '#find_for_oauth' do
+      let!(:user){ create(:user) }
+      let(:auth){ OmniAuth::AuthHash.new(provider:'facebook', uid:'123456') }
+      let(:service){ double('FindForOauth') }
+      
+      it 'calls FindForOauth' do
+        expect(FindForOauth).to receive(:new).with(auth).and_return(service)
+        expect(service).to receive(:call)
+        User.find_for_oauth(auth)
       end
     end
   end
