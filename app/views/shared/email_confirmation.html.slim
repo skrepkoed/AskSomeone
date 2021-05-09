@@ -1,0 +1,6 @@
+h2 Please confirm your email
+
+= form_for :email, url:email_confirmation_path, local:true do |form|
+  = form.label :email
+  = form.text_field :email
+  = form.submit

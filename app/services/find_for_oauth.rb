@@ -8,8 +8,8 @@ class FindForOauth
   def call
     authorization = Authorization.where(provider:auth.provider, uid:auth.uid.to_s).first
     return authorization.user if authorization
-    email =auth.info[:email]
-    user =User.find_by(email: email)
+    return User.new unless email = auth.info[:email]
+    user = User.find_by(email: email)
     if user
       user.create_authorization(auth)
     else 

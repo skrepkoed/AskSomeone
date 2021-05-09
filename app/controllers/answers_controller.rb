@@ -55,6 +55,7 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return unless @answer.valid?
+
     for_users = ApplicationController.render(
       partial: 'answers/answer_public',
       locals: { answer: @answer }
