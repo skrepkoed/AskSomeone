@@ -11,6 +11,7 @@ module AskSomeone
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
+    #config.autoload_paths+=[config.root.join('app')]
     config.generators do |g|
       g.framework :rspec,
                       view_specs: false,

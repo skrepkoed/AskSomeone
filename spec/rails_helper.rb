@@ -38,7 +38,10 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
+  config.include OmniauthHelpers, type: :feature
   Capybara.javascript_driver = :selenium_chrome_headless
+  Capybara.server_port = 3001
+  Capybara.app_host = 'http://localhost:3001'
   # Capybara.default_max_wait_time = 5
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -74,3 +77,4 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+OmniAuth.config.test_mode = true

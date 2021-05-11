@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   get 'achievements/index', to: 'achievements#index', as: :achievements
-  devise_for :users
+  
+  devise_for :users, controllers: {omniauth_callbacks: 'oauth_callbacks'}
+
+  devise_scope :user do
+    post 'email_confirmation', to: 'oauth_callbacks#confirm'
+    get 'email_confirmed/:provider/:uid', to: 'oauth_callbacks#confirmed', as: :confirmed
+  end
   root to: 'questions#index'
   
   concern :attachable do
