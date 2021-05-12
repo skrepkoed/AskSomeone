@@ -1,8 +1,9 @@
 class RatingsController < ApplicationController
   before_action :authenticate_user!
-
+  authorize_resource
   def pro
     @rating = Rating.find(params[:id])
+    authorize! :pro, @rating
     @vote = @rating.find_user_vote(current_user).account_vote(1)
     respond_to do |format|
       if @vote.errors.empty?
@@ -16,6 +17,7 @@ class RatingsController < ApplicationController
 
   def con
     @rating = Rating.find(params[:id])
+    authorize! :con, @rating
     @vote = @rating.find_user_vote(current_user).account_vote(-1)
     respond_to do |format|
       if @vote.errors.empty?

@@ -13,6 +13,10 @@ class Rating < ApplicationRecord
     end
   end
 
+  def ratingable_resource
+    ratingable_type.constantize.find(ratingable_id)
+  end
+
   def find_user_vote(user)
     votes.find_by(user_id: user) || votes.new(user_id: user.id)
   end

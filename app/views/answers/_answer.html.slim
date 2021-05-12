@@ -24,18 +24,18 @@ li.answer id="answer-#{answer.id}"
     = "Rating: #{answer.rating.rating}"
     p.rating-message
   br
-  - if current_user && !(current_user&.author?(answer))
+  - if can? :vote, answer.rating
     = link_to "#{ answer.rating.voted?(current_user,1) || "Vote pro" }", answer_pro_path(answer, answer.rating), class: 'rating-link rating-link-pro', method: :post, data:{type: :json}, remote: true
     br
     = link_to "#{ answer.rating.voted?(current_user,-1) || "Vote con" }", answer_con_path(answer, answer.rating), class: 'rating-link rating-link-con', method: :post, data:{type: :json}, remote: true
   br
-  - if current_user&.author?(answer)
+  - if can? :update, answer
     = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
     br
     = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
   div.answer_edit_hidden
     = render '/answers/answer_edit_form', answer:answer
-  -if current_user&.author?(answer.question)
+  -if can? :mark_best, (answer.question)
     br
     = link_to 'Best answer', question_mark_best_path(answer.question, answer), method: :patch, class: 'best-answer-link', remote: true
   br

@@ -1,2 +1,2 @@
 $('.notice').html('<%= render 'shared/messages' %>')
-$('#attachment-id-<%= @attachment.id %>').remove()
+if (!'<%= flash[:alert] %>') {$('#attachment-id-<%= @attachment.id %>').remove()}

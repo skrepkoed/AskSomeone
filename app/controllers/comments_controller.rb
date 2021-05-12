@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   after_action :broadcast_comment
+  authorize_resource
   def create
     @comment = @commentable.comments.new(params_comment)
     @comment.author = current_user

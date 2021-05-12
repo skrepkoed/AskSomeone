@@ -88,7 +88,7 @@ RSpec.describe AnswersController, type: :controller do
         end.to_not change(Answer, :count)
       end
 
-      it 'renders destroy.js.erb' do
+      it 'rendirects to root ' do
         delete :destroy, params: { question_id: answer.question.id, id: answer.id }, format: :js
         expect(response).to render_template :destroy
       end
