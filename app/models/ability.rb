@@ -25,11 +25,11 @@ class Ability
     can %i[create show], [Question, Answer]
     can :create, Comment
     can :destroy, ActiveStorage::Attachment do |attachment|
-      attachment.record_type.constantize.find(attachment.record_id).author.id == user.id
+      user.author?(attachment.record)
     end
     can :read, :all
     can :vote, Rating do |rating|
-      rating.ratingable_resource.author.id != user.id
+      !user.author?(rating.ratingable)
     end
   end
 
