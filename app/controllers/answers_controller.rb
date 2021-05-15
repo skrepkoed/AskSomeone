@@ -3,6 +3,7 @@ class AnswersController < ApplicationController
   before_action :set_question, only: %i[create]
   before_action :set_answer, only: %i[destroy edit update]
   after_action :publish_answer, only: %i[create]
+  authorize_resource
   def new
     @answer = Answer.new
   end
@@ -22,21 +23,14 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user.author?(@answer)
-      @answer.update(params_answer)
-      flash.now[:errors] = @answer.errors.full_messages
-    else
-      flash.now[:notice] = 'You must be author to edit'
-    end
+    @answer.update(params_answer)
+    flash[:errors] = @answer.errors.full_messages
   end
 
   def destroy
-    if current_user.author?(@answer)
-      @answer.destroy
-      flash.now[:notice] = 'Your answer has been deleted'
-    else
-      flash.now[:notice] = 'You must be author to delete'
-    end
+    authorize! :destroy, @answer, message: 'You must be author to delete answer'
+    @answer.destroy
+    flash.now[:notice] = 'Your answer has been deleted'
   end
 
   private

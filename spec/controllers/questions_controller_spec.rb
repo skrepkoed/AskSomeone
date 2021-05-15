@@ -127,9 +127,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: question.id } }.to_not change(Question, :count)
       end
 
-      it 'renders question`s show view' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: question.id }
-        expect(response).to render_template :show
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -202,14 +202,14 @@ RSpec.describe QuestionsController, type: :controller do
 
       before { login(user) }
 
-      it 'has best answer' do
+      it 'has not best answer' do
         patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
         expect(assigns(:question).best_answer).to eq nil
       end
 
       it 'renders mark_best.js.erb' do
         patch :mark_best, params: { question_id: question.id, answer_id: question.answers.first.id }, format: :js
-        expect(flash[:notice]).to eq 'You must be author to mark answer as best'
+        expect(flash[:alert]).to eq 'You must be author to mark answer as best'
       end
     end
   end

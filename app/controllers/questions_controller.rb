@@ -2,6 +2,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show destroy edit update]
   after_action :publish_question, only: %i[create]
+  authorize_resource
   def new
     @question = current_user.questions.new
     @question.links.new
@@ -34,32 +35,21 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.author?(@question)
-      @question.update(params_question)
-      flash[:errors] = @question.errors.full_messages
-    else
-      flash[:notice] = 'You must be author to edit'
-    end
+    @question.update(params_question)
+    flash[:errors] = @question.errors.full_messages
   end
 
   def mark_best
     @question = Question.find(params[:question_id])
+    authorize! :mark_best, @question, message: 'You must be author to mark answer as best'
     @former_best_answer = @question.best_answer
     @answer = Answer.find(params[:answer_id])
-    if current_user.author?(@question)
-      @question.mark_best_answer(@answer)
-    else
-      flash[:notice] = 'You must be author to mark answer as best'
-    end
+    @question.mark_best_answer(@answer)
   end
 
   def destroy
-    if current_user.author?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question has been deleted'
-    else
-      render :show, notice: 'You must be author to delete'
-    end
+    @question.destroy
+    redirect_to questions_path, notice: 'Your question has been deleted'
   end
 
   private

@@ -38,7 +38,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'renders destroy.js.erb' do
         delete :destroy, params: { question_id: question.id, id: question.files.first.id }, format: :js
-        expect(flash[:notice]).to eq 'You must be author to delete attachment'
+        expect(flash[:alert]).to eq 'You must be author to delete attachment'
       end
     end
 
@@ -78,7 +78,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'renders destroy.js.erb' do
         delete :destroy, params: { answer_id: answer.id, id: answer.files.first.id }, format: :js
-        expect(flash[:notice]).to eq 'You must be author to delete attachment'
+        expect(flash[:alert]).to eq 'You must be author to delete attachment'
       end
     end
   end
