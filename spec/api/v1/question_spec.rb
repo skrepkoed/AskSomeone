@@ -198,6 +198,44 @@ describe 'Profile Api', type: :request do
           expect(response.status).to eq 401
         end
       end
+
+      context 'question does not belong to user' do
+        let!(:question){ create(:question) }
+        before { patch "/api/v1/questions/#{question.id}", params: {access_token: access_token.token, question: {body:'new_body'} }, headers: headers }
+        it 'does not update question' do
+          expect(response.status).to eq 401
+        end
+      end
+    end
+  end
+
+  describe 'DELETE api/v1/questions/:id' do
+    let!(:access_token){ create(:access_token) }
+    let!(:user){ User.find(access_token.resource_owner_id) }
+    let!(:question){ create(:question, author:user) }
+    let(:api_path){  "/api/v1/questions/#{question.id}" }
+    let(:method){ :delete }
+    
+    it_behaves_like 'API authorizable'
+
+    context 'authorized' do
+      it 'destroys question' do
+        expect { delete "/api/v1/questions/#{question.id}",
+        params: {access_token: access_token.token },
+        headers: headers }.to change(user.questions, :count).by(-1)
+        expect(response).to be_successful
+      end
+    end
+
+    context 'question does not belong to user' do
+      let!(:question){ create(:question) }
+
+      it 'does not destroy question' do 
+        expect { delete "/api/v1/questions/#{question.id}",
+        params: {access_token: access_token.token },
+        headers: headers }.to_not change(Question, :count)
+        expect(response.status).to eq 401
+      end
     end
   end
 
