@@ -88,8 +88,6 @@ describe 'Profile Api', type: :request do
     let(:method){ :get }
     it_behaves_like 'API authorizable'
 
-    before { get "/api/v1/questions/#{question.id}/answers", params: {access_token: access_token.token}, headers: headers }
-
     context 'authorized' do
       let(:access_token){ create(:access_token) }
       let(:answer_response){ json['answers'].first }
@@ -171,4 +169,36 @@ describe 'Profile Api', type: :request do
       end
     end
   end
+
+  describe 'PATCH api/v1/questions/update' do
+    let!(:access_token){ create(:access_token) }
+    let!(:user){ User.find(access_token.resource_owner_id) }
+    let!(:question){ create(:question, author:user) }
+    let(:api_path){  "/api/v1/questions/#{question.id}" }
+    let(:method){ :patch }
+    
+    it_behaves_like 'API authorizable'
+
+    context 'authorized' do
+      
+      let(:question_response){ json['question'] }
+      before { patch "/api/v1/questions/#{question.id}", params: {access_token: access_token.token, question: {body:'new_body'} }, headers: headers }
+        
+      it 'returns 200 status' do
+        expect(response).to be_successful
+      end
+
+      it 'updates question' do
+        expect(question_response['body']).to eq 'new_body'
+      end
+
+      context 'invalid attribute' do
+        before { patch "/api/v1/questions/#{question.id}", params: {access_token: access_token.token, question: {body:''} }, headers: headers }
+        it 'returns 401 status' do 
+          expect(response.status).to eq 401
+        end
+      end
+    end
+  end
+
 end

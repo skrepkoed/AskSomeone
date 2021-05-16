@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       resources :profiles, only:[:index] do
         get :me, on: :collection
       end
-      resources :questions, only:[:index, :show, :create] do
+      resources :questions, only:[:index, :show, :create, :update] do
         resources :answers, only:[:index,:show]
       end
     end
