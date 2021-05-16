@@ -135,31 +135,32 @@ describe 'Profile Api', type: :request do
     end
   end
 
-  describe 'DELETE api/v1/questions/:id' do
+  describe 'DELETE api/v1/questions/:question_id/answers/:id' do
     let!(:access_token){ create(:access_token) }
     let!(:user){ User.find(access_token.resource_owner_id) }
-    let!(:question){ create(:question, author:user) }
-    let(:api_path){  "/api/v1/questions/#{question.id}" }
+    let!(:question){ create(:question) }
+    let!(:answer){ create(:answer, question: question, author: user) }
+    let(:api_path){  "/api/v1/questions/#{question.id}/answers/#{answer.id}" }
     let(:method){ :delete }
     
     it_behaves_like 'API authorizable'
 
     context 'authorized' do
       it 'destroys question' do
-        expect { delete "/api/v1/questions/#{question.id}",
+        expect { delete "/api/v1/questions/#{question.id}/answers/#{answer.id}",
         params: {access_token: access_token.token },
-        headers: headers }.to change(user.questions, :count).by(-1)
+        headers: headers }.to change(user.answers, :count).by(-1)
         expect(response).to be_successful
       end
     end
 
     context 'question does not belong to user' do
       let!(:question){ create(:question) }
-
+      let!(:answer){ create(:answer, question: question) }
       it 'does not destroy question' do 
-        expect { delete "/api/v1/questions/#{question.id}",
+        expect { delete "/api/v1/questions/#{question.id}/answers/#{answer.id}",
         params: {access_token: access_token.token },
-        headers: headers }.to_not change(Question, :count)
+        headers: headers }.to_not change(Answer, :count)
         expect(response.status).to eq 401
       end
     end

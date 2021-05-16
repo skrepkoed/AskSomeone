@@ -37,6 +37,13 @@ class Api::V1::AnswersController<Api::V1::BaseController
     end
   end
 
+  def destroy
+    set_question
+    @answer = @question.answers.find(params[:id])
+    authorize! :destroy, @answer
+    @question.destroy
+  end
+
   private
 
   def params_answer
