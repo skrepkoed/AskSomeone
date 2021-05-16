@@ -148,4 +148,27 @@ describe 'Profile Api', type: :request do
       end
     end
   end
+
+  describe 'POST api/v1/questions' do
+    let(:api_path){  '/api/v1/questions' }
+    let(:method){ :post }
+    
+    it_behaves_like 'API authorizable'
+
+    context 'authorized' do
+      let(:access_token){ create(:access_token) }
+      let(:user){ User.find(access_token.resource_owner_id) }
+      before { post "/api/v1/questions", params: {access_token: access_token.token, question: attributes_for(:question) }, headers: headers }
+        
+      it 'returns 200 status' do
+        expect(response).to be_successful
+      end
+
+      it 'saves question' do
+        expect{
+          post "/api/v1/questions", params: {access_token: access_token.token, question: attributes_for(:question) }, headers: headers 
+        }.to change(user.questions, :count).by(1)
+      end
+    end
+  end
 end
