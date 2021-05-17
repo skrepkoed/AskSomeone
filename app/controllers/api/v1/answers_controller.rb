@@ -1,5 +1,5 @@
-class Api::V1::AnswersController<Api::V1::BaseController
-  alias :current_user :current_resource_owner
+class Api::V1::AnswersController < Api::V1::BaseController
+  alias current_user current_resource_owner
   authorize_resource
   def index
     set_question
@@ -17,7 +17,7 @@ class Api::V1::AnswersController<Api::V1::BaseController
     set_question
     @answer = @question.answers.new(params_answer)
     @answer.author = current_user
-    
+
     if @answer.save
       @answer.create_rating
     else
@@ -29,7 +29,7 @@ class Api::V1::AnswersController<Api::V1::BaseController
     set_question
     @answer = @question.answers.find(params[:id])
     authorize! :update, @answer
-    
+
     if params[:answer] && @answer.update(params_answer)
       render json: @answer, serializer: SingleAnswerSerializer
     else

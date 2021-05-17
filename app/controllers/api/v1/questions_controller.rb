@@ -1,5 +1,5 @@
-class Api::V1::QuestionsController<Api::V1::BaseController
-  alias :current_user :current_resource_owner
+class Api::V1::QuestionsController < Api::V1::BaseController
+  alias current_user current_resource_owner
   authorize_resource
   before_action :set_question, only: %i[show update destroy]
   def index
@@ -8,20 +8,18 @@ class Api::V1::QuestionsController<Api::V1::BaseController
   end
 
   def show
-    #@question = Question.find(params[:id])
+    # @question = Question.find(params[:id])
     render json: @question, serializer: SingleQuestionSerializer
   end
-  
+
   def create
     @question = current_resource_owner.questions.new(params_question)
-    if @question.save
-      render json: @question, serializer: SingleQuestionSerializer 
-    end
+    render json: @question, serializer: SingleQuestionSerializer if @question.save
   end
 
   def update
-    #byebug
-    #@question = Question.find(params[:id])
+    # byebug
+    # @question = Question.find(params[:id])
     authorize! :update, @question
     if params[:question] && @question.update(params_question)
       render json: @question, serializer: SingleQuestionSerializer
