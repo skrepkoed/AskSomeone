@@ -2,6 +2,8 @@ class SingleQuestionSerializer < ActiveModel::Serializer
   type 'question'
   attributes :id, :title, :body, :created_at, :updated_at, :links_url, :files_url
   has_many :comments
+  belongs_to :author
+  has_many :files
 
   def links_url
    object.links.pluck(:url) 
