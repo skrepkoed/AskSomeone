@@ -22,12 +22,12 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid values' do
-      it 'saves answers in DB' do
-        expect do
-          post :create, params: { question_id: question.id, answer: attributes_for(:answer, :for_create) },
-                        format: :js
-        end.to change(question.answers, :count).by(1)
+      let(:perform) do
+        post :create, params: { question_id: question.id, answer: attributes_for(:answer, :for_create) },
+                      format: :js
       end
+      let(:resource_collection) { question.answers }
+      it_behaves_like 'resource saved'
 
       it 'renders create.js.erb view' do
         post :create, params: { question_id: question.id, answer: attributes_for(:answer, :for_create) },

@@ -8,13 +8,11 @@ RSpec.describe Rating, type: :model do
   end
 
   describe 'instance methods' do
+    include_context 'for rating'
+    let!(:rating) { question.rating }
+
     describe '#voted?' do
       describe 'user voted ' do
-        let!(:question) { create(:question) }
-        let!(:user) { create(:user) }
-        let!(:variant) { 1 }
-        let!(:rating) { question.rating }
-
         it 'give back Voted' do
           question.rating.find_user_vote(user).account_vote(variant)
           expect(rating.voted?(user, variant)).to eq('Voted')
@@ -27,11 +25,6 @@ RSpec.describe Rating, type: :model do
       end
 
       describe 'user hasn`t voted' do
-        let(:question) { create(:question) }
-        let(:user) { create(:user) }
-        let(:variant) { 1 }
-        let(:rating) { question.rating }
-
         it 'give back false' do
           expect(rating.voted?(user, variant)).to be false
         end

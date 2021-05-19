@@ -26,11 +26,11 @@ RSpec.describe Answer, type: :model do
   end
 
   describe 'instance methods' do
+    let!(:answer) { create(:answer) }
+    let!(:question) { answer.question }
+
     describe 'best_answer?' do
       context 'answer is the best' do
-        let!(:answer) { create(:answer) }
-        let!(:question) { answer.question }
-
         it 'should be the best answer' do
           question.mark_best_answer(answer)
           expect(answer.best_answer?).to be true
@@ -38,20 +38,14 @@ RSpec.describe Answer, type: :model do
       end
 
       context 'answer isn`t best' do
-        let(:answer) { create(:answer) }
-        let(:question) { answer.question }
-
-        it 'should be the best answer' do
+        it 'should not be the best answer' do
           expect(answer.best_answer?).to be false
         end
       end
     end
 
     describe 'before_destroy callback' do
-      let(:answer) { create(:answer) }
-      let(:question) { answer.question }
-
-      it 'should be the best answer' do
+      it 'should not have the best answer' do
         question.mark_best_answer(answer)
         answer.destroy
         expect(question.best_answer).to be nil

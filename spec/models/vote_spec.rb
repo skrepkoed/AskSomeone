@@ -13,9 +13,8 @@ RSpec.describe Vote, type: :model do
     it { should validate_uniqueness_of(:rating_id).scoped_to(:user_id).with_message('You can vote only once') }
 
     describe '#impossible_to_vote_with_same_variant' do
-      let(:question) { create(:question) }
-      let(:user) { create(:user) }
-      let(:variant) { 1 }
+      include_context 'for rating'
+
       let(:vote) { question.rating.find_user_vote(user).account_vote(variant) }
 
       it ' make impossible to vote twice with same variant' do
@@ -25,19 +24,14 @@ RSpec.describe Vote, type: :model do
     end
   end
   describe 'instance methods' do
+    include_context 'for rating'
     describe '#account_vote' do
-      let(:question) { create(:question) }
-      let(:user) { create(:user) }
-      let(:variant) { 1 }
       it 'account user`s vote' do
         question.rating.find_user_vote(user).account_vote(1)
         expect(question.rating.rating).to eq(1)
       end
     end
     describe '#voted' do
-      let(:question) { create(:question) }
-      let(:user) { create(:user) }
-      let(:variant) { 1 }
       let(:vote) { question.rating.find_user_vote(user).account_vote(variant) }
       it 'returns how user voted and how he can revote' do
         expect(vote.voted(-1)).to eq('Revote')
@@ -46,9 +40,6 @@ RSpec.describe Vote, type: :model do
     end
 
     describe '#unvote' do
-      let(:question) { create(:question) }
-      let(:user) { create(:user) }
-      let(:variant) { 1 }
       let(:vote) { question.rating.find_user_vote(user).account_vote(variant) }
       it 'unvote given vote' do
         vote.variant = -1
