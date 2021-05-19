@@ -5,10 +5,14 @@ class SingleAnswerSerializer < ActiveModel::Serializer
   has_many :comments
 
   def links_url
-   object.links.pluck(:url) 
+    object.links.pluck(:url)
   end
 
   def files_url
-    object.files.map{ |file| Rails.application.routes.url_helpers.rails_blob_path(file,only_path: true) } unless object.files.empty?
+    unless object.files.empty?
+      object.files.map do |file|
+        Rails.application.routes.url_helpers.rails_blob_path(file, only_path: true)
+      end
+    end
   end
 end

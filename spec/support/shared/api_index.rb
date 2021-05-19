@@ -1,14 +1,13 @@
 shared_examples_for 'API CRUD operations' do
-  
-  describe "list of resource" do
+  describe 'list of resource' do
     it_behaves_like 'API authorizable'
     context 'Authorized' do
-      let(:access_token){ create(:access_token) }
-      
-      before { do_request(method, api_path, params: {access_token: access_token.token}, headers: headers) }
-    
-      let(:resource_response){ json[resource_name.pluralize].first }
-      
+      let(:access_token) { create(:access_token) }
+
+      before { do_request(method, api_path, params: { access_token: access_token.token }, headers: headers) }
+
+      let(:resource_response) { json[resource_name.pluralize].first }
+
       it 'returns 200 status' do
         expect(response).to be_successful
       end
@@ -18,7 +17,7 @@ shared_examples_for 'API CRUD operations' do
       end
 
       it 'returns all public fields' do
-        %w[id  body created_at updated_at].each do |attr|
+        %w[id body created_at updated_at].each do |attr|
           expect(resource_response[attr]).to eq resource.send(attr).as_json
         end
       end

@@ -1,20 +1,18 @@
 class Api::V1::AnswersController < Api::V1::BaseController
-  alias current_user current_resource_owner
   authorize_resource
+  before_action :set_question
   def index
-    set_question
+    
     @answers = @question.answers.all
     render json: @answers
   end
 
   def show
-    set_question
     @answer = @question.answers.find(params[:id])
     render json: @answer, serializer: SingleAnswerSerializer
   end
 
   def create
-    set_question
     @answer = @question.answers.new(params_answer)
     @answer.author = current_user
 
@@ -26,7 +24,6 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def update
-    set_question
     @answer = @question.answers.find(params[:id])
     authorize! :update, @answer
 
@@ -38,7 +35,6 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def destroy
-    set_question
     @answer = @question.answers.find(params[:id])
     authorize! :destroy, @answer
     @question.destroy

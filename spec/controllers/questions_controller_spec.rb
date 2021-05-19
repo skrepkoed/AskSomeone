@@ -23,9 +23,12 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attrubutes' do
-      it 'saves new question in DB' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
+      let(:perform) do
+        post :create, params: { question: attributes_for(:question) },
+                      format: :js
       end
+      let(:resource_collection) { user.questions }
+      it_behaves_like 'resource saved'
 
       it 'render to show view' do
         post :create, params: { question: attributes_for(:question) }

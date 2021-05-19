@@ -6,7 +6,7 @@ FactoryBot.define do
 
     after :create do |question|
       create :rating, ratingable_id: question.id, ratingable_type: 'Question'
-      create :link, linkable_id: question.id, linkable_type: 'Question'
+      # create :link, linkable_id: question.id, linkable_type: 'Question'
     end
   end
 

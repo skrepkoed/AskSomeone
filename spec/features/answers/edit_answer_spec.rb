@@ -46,8 +46,8 @@ I`d like to visit question`s show page and edit my answer' do
         background { visit question_path(question) }
 
         scenario 'User can delete links while update' do
-          expect(page).to have_content 'MyUrl1'
-          expect(page).to have_content 'MyUrl2'
+          expect(page).to have_content link1.name
+          expect(page).to have_content link2.name
 
           within all('.answer').first do
             click_on 'Edit answer'
@@ -59,7 +59,7 @@ I`d like to visit question`s show page and edit my answer' do
 
           click_on 'Edit'
 
-          expect(page).to_not have_content 'MyUrl2'
+          expect(page).to_not have_content link2.name
         end
       end
 
