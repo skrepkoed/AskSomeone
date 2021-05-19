@@ -22,6 +22,14 @@ RSpec.describe Question, type: :model do
     expect(Question.new.files).to be_an_instance_of ActiveStorage::Attached::Many
   end
 
+  describe '#today_questions' do
+    let!(:questions){create_list :question, 3} 
+    it 'reutrns questions created today' do
+      questions.last.update(created_at:Time.now-1.day)
+      expect(Question.today_questions.count).to eq 2  
+    end 
+  end
+
   describe 'validations' do
     subject { build(:question) }
 

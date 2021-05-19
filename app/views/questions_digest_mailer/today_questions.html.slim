@@ -1,0 +1,8 @@
+h1 Hi from Asksomeone
+
+p Today people asked some questions:
+
+- @questions.each do |question|
+  li 
+    h3 =question.title
+    p =question.body.truncate(20)

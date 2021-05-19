@@ -15,6 +15,8 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
   validates :body, length: { minimum: 5 }
 
+  scope :today_questions, -> { where(created_at: Time.now.midnight...(Time.now.midnight+1.day)) }
+
   def mark_best_answer(answer)
     achievement.user = answer.author if achievement
     self.best_answer = answer
