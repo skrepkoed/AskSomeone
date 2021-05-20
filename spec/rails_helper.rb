@@ -5,6 +5,7 @@ require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -40,6 +41,7 @@ RSpec.configure do |config|
   config.include FeatureHelpers, type: :feature
   config.include OmniauthHelpers, type: :feature
   config.include ApiHelpers, type: :request
+  config.include ActiveJob::TestHelper
   Capybara.javascript_driver = :selenium_chrome_headless
   Capybara.server_port = 3001
   Capybara.app_host = 'http://localhost:3001'
@@ -79,3 +81,12 @@ Shoulda::Matchers.configure do |config|
   end
 end
 OmniAuth.config.test_mode = true
+
+RSpec::Sidekiq.configure do |config|
+  # Clears all job queues before each example
+  config.clear_all_enqueued_jobs = true # default => true
+  # Whether to use terminal colours when outputting messages
+  config.enable_terminal_colours = true # default => true
+  # Warn when jobs are not enqueued to Redis but to a job array
+  config.warn_when_jobs_not_processed_by_sidekiq = true # default => true
+end
