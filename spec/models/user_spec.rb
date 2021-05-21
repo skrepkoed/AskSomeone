@@ -37,6 +37,21 @@ RSpec.describe User, type: :model do
           expect(user.author?(question)).to be false
         end
       end
+      describe '.subscribed?' do
+        let!(:question){ create(:question) }
+        let(:user){ question.author }
+        it 'returns true if user subscribed' do
+          expect(user.subscribed?(question)).to be true
+        end
+      end
+
+      describe '.subscription' do
+        let!(:question){ create(:question) }
+        let(:user){ question.author }
+        it 'returns subscription' do
+          expect(user.subscription(question)).to be_present
+        end
+      end
     end
 
     describe '.associate_achievement associate achievement if it`s not nil' do

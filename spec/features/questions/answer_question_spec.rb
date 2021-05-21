@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'sidekiq/testing'
-Sidekiq::Testing.fake!
 
 feature 'Authenticated user can answer the question at question`s show page', '
   In order to answer the question as authenticated user

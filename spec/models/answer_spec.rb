@@ -44,6 +44,8 @@ RSpec.describe Answer, type: :model do
     end
 
     describe 'before_destroy callback' do
+      let!(:answer) { create(:answer) }
+      let!(:question) { answer.question }
       it 'should not have the best answer' do
         question.mark_best_answer(answer)
         answer.destroy

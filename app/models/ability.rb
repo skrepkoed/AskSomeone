@@ -23,7 +23,8 @@ class Ability
     can %i[edit update destroy index], [Question, Answer], user_id: user.id
     can :mark_best, Question, user_id: user.id
     can %i[create show], [Question, Answer]
-    can :create, Comment
+    can :create, [Comment,Subscription]
+    can :destroy, Subscription
     can :destroy, ActiveStorage::Attachment do |attachment|
       user.author?(attachment.record)
     end

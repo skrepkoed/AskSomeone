@@ -279,9 +279,6 @@ GEM
       rspec-expectations (~> 3.10)
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
-    rspec-sidekiq (3.1.0)
-      rspec-core (~> 3.0, >= 3.0.0)
-      sidekiq (>= 2.4.0)
     rspec-support (3.10.2)
     ruby2_keywords (0.0.4)
     rubyzip (2.3.0)
@@ -394,7 +391,6 @@ DEPENDENCIES
   rails (~> 6.0.3, >= 6.0.3.5)
   rails-controller-testing
   rspec-rails (~> 5.0.0)
-  rspec-sidekiq
   sass-rails (>= 6)
   selenium-webdriver
   shoulda-matchers (~> 4.0)
