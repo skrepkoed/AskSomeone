@@ -24,6 +24,7 @@ describe Ability, type: :model do
     let(:other_question) { create(:question, author: other) }
     let(:user_answer) { create(:answer, author: user) }
     let(:other_answer) { create(:answer, author: other) }
+    let(:user_subscription) { user.subscription(user_question) }
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
@@ -32,6 +33,7 @@ describe Ability, type: :model do
       it { should be_able_to :create, Question }
       it { should be_able_to :create, Answer }
       it { should be_able_to :create, Comment }
+      it { should be_able_to :create, Subscription }
     end
 
     context 'Update' do
@@ -45,6 +47,7 @@ describe Ability, type: :model do
     context 'Destroy' do
       it { should be_able_to :destroy, user_question }
       it { should_not be_able_to :destroy, other_question }
+      it { should be_able_to :destroy, user_subscription }
 
       it { should be_able_to :destroy, user_answer }
       it { should_not be_able_to :destroy, other_answer }

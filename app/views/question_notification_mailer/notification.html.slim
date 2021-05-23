@@ -1,0 +1,53 @@
+h1 Hi from AskSomeone
+p It looks lile your question was answered by someone! Find answer in: 
+
+  = link_to 'Question', question_url(@question)
+
+h2
+  = @question.title
+  p  
+    = "Author: #{@question.author.email}"
+  p
+    = @question.body
+  p
+    ul.question-links
+      - @question.links.each do |link|
+        -if link.gist?
+          li.gist-link
+            = javascript_include_tag link.url+".js"
+        -else
+          li
+            = link_to link.name, url_for(link.url), target: "_blank"
+  -if @question.achievement
+    p.achievement
+      = @question.achievement.name
+      br
+      = @question.achievement.description
+      br
+      -if @question.achievement.file.attached?
+        = image_tag url_for(@question.achievement.file), size:"250x150"
+  -if @question.files.attached?
+    - @question.files.each do |file|
+      p id="attachment-id-#{file.id}"
+        = link_to file.filename.to_s, url_for(file)
+
+p Answer
+p
+  = "Author: #{@answer.author.email}" 
+  br
+  = @answer.body
+  br
+  p
+    ul.answer-links
+      - @answer.links.each do |link|
+        -if link.gist?
+          li.gist-link
+            = javascript_include_tag link.url+".js"
+        -else
+          li
+            = link_to link.name, url_for(link.url), target: "_blank"
+  br
+  - if @answer.files.attached?
+    - @answer.files.each do |file|
+      p id="attachment-id-#{file.id}"
+        = link_to file.filename.to_s, url_for(file)

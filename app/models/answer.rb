@@ -11,9 +11,14 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   before_destroy :nullify_best_answer, if: :best_answer?
+  after_create :notify_about_answer
 
   def best_answer?
     question.best_answer&.id == id
+  end
+
+  def notify_about_answer
+    QuestionNotifyJob.perform_later(self)
   end
 
   private

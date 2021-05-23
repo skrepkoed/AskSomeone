@@ -26,10 +26,9 @@ RSpec.describe Answer, type: :model do
   end
 
   describe 'instance methods' do
-    let!(:answer) { create(:answer) }
-    let!(:question) { answer.question }
-
-    describe 'best_answer?' do
+    describe '.best_answer?' do
+      let!(:answer) { create(:answer) }
+      let!(:question) { answer.question }
       context 'answer is the best' do
         it 'should be the best answer' do
           question.mark_best_answer(answer)
@@ -45,11 +44,21 @@ RSpec.describe Answer, type: :model do
     end
 
     describe 'before_destroy callback' do
+      let!(:answer) { create(:answer) }
+      let!(:question) { answer.question }
       it 'should not have the best answer' do
         question.mark_best_answer(answer)
         answer.destroy
         expect(question.best_answer).to be nil
       end
+    end
+  end
+
+  describe 'notify_about_answer' do
+    subject{ build(:answer) }
+    it 'should notify about new answer' do
+      expect(QuestionNotifyJob).to receive(:perform_later)
+      subject.save
     end
   end
 end

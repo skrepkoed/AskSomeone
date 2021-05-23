@@ -1,4 +1,12 @@
+require 'sidekiq/web'
+
+
 Rails.application.routes.draw do
+  get 'subscriptions/create'
+  get 'subscriptions/destroy'
+  authenticate :user, lambda {|u| u.admin?} do 
+    mount Sidekiq::Web => '/sidekiq'
+  end
   use_doorkeeper
 
   namespace :api do
@@ -32,6 +40,7 @@ Rails.application.routes.draw do
   resources :questions, concerns: [:attachable, :votable] do
     patch 'mark_best/:answer_id', to: 'questions#mark_best', as: :mark_best
     resources :comments, only:[:create], module: 'questions'
+    resources :subscriptions, only:[:create,:destroy]
     resources :answers, concerns: :votable,  shallow: true do
       resources :comments, only:[:create], module: 'answers'
       delete 'attachments/:id', to: 'attachments#destroy', as: :attachment

@@ -32,6 +32,13 @@ div.question id="question-#{question.id}"
     = "Rating: #{@question.rating.rating}"
     p.rating-message
   br
+
+  - if can? :create, Subscription 
+    - if current_user.subscribed?(question)
+      = link_to 'Unsubscribe', question_subscription_path(question, current_user.subscription(question)), class: 'subscription', method: :delete, remote: true
+    -else
+      = link_to 'Subscribe', question_subscriptions_path(question), class: 'subscription', method: :post, remote: true
+  br
   - if can? :vote, @question.rating
     = link_to "#{ @question.rating.voted?(current_user,1) || "Vote pro" }", question_pro_path(@question, @question.rating), class: 'rating-link rating-link-pro', method: :post, data:{type: :json}, remote: true
     br

@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :achievements, dependent: :destroy
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions
+  has_and_belongs_to_many :subscibed_questions, join_table:'subscriptions', class_name:'Question'
 
   scope :without_user, ->(user) { where.not(id: user.id) }
 
@@ -24,6 +26,14 @@ class User < ApplicationRecord
 
   def admin?
     admin
+  end
+
+  def subscribed?(question)
+    subscibed_questions.find_by(id: question).present?
+  end
+
+  def subscription(question)
+    subscriptions.find_by(question_id:question)
   end
 
   def self.find_for_oauth(auth)

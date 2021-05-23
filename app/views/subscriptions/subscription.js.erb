@@ -1,0 +1,7 @@
+if($('.subscription').text()=='Subscribe'){ 
+  $('.subscription').replaceWith(
+    "<%= j link_to 'Unsubscribe', question_subscription_path(@question, @subscription), class: 'subscription', method: :delete, remote: true%>")
+}else{ 
+  $('.subscription').replaceWith(
+    "<%= j link_to 'Subscribe', question_subscriptions_path(@question), class: 'subscription', method: :post, remote: true %>") 
+}
