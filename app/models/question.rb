@@ -4,7 +4,7 @@ class Question < ApplicationRecord
   has_one :rating, dependent: :destroy, as: :ratingable
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
-  has_and_belongs_to_many :subscribers, join_table:'subscriptions', class_name:'User'
+  has_and_belongs_to_many :subscribers, join_table:'subscriptions', class_name:'User', dependent: :destroy
   has_one :achievement, dependent: :destroy
   belongs_to :best_answer, class_name: 'Answer', optional: true
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'

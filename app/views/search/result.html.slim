@@ -1,0 +1,8 @@
+h1 Search#result
+p Find me in app/views/search/result.html.slim
+- unless @result.empty?
+  ul class="list-group"
+    - @result.each do |result|
+      = render search_resource(result), result: result
+-else
+  p No results

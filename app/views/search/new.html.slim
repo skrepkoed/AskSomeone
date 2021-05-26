@@ -1,0 +1,13 @@
+h1 Search#new
+p Find me in app/views/search/new.html.slim
+= form_tag search_result_path, method: :get do |form|
+  div class="row"
+    div class="input-group "
+      div class=".col-2 .col-md-4"
+        div class="input-group-prepend"
+          label class="input-group-text" for="inputGroupSelect01" Options
+          = select_tag "resources", options_for_select(@resources), class: "custom-select", id:"inputGroupSelect01"
+      div class="col-10 col-md-8"   
+        div class="input-group"
+          = search_field_tag 'search', nil, placeholder: 'Enter your search query here', class: "form-control" 
+          = submit_tag 'Search', class: "btn btn-outline-secondary", id: "button-addon2" 
