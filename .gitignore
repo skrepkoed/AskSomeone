@@ -24,7 +24,7 @@
 
 /public/assets
 .byebug_history
-
+/db/sphinx
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /config/database.yml
@@ -35,3 +35,6 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+/dump.rdb
+/config/development.sphinx.conf
+/config/test.sphinx.conf

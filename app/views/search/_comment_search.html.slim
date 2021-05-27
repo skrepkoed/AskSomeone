@@ -1,0 +1,11 @@
+li class="list-group-item"
+  p Comment:
+  p Author:
+  p = result.author.email
+  p = result.body.truncate(20)
+  p From question:
+  p = link_to result.question.title.truncate(12), question_path(result.question)
+  p Created at: 
+  p  = result.created_at
+  p Updated at: 
+  p  = result.updated_at
