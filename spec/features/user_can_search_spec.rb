@@ -6,12 +6,12 @@ feature 'User can search for answer', "
   I'd like to be able to search for the answer
 " do 
   before do
-    user || = User.create(email:'user123456@gmail.com', password:'12345678',password_confirmation:'12345678')
+    user ||= User.create(email:'user123456@gmail.com', password:'12345678',password_confirmation:'12345678')
     #byebug
-    question || = user.questions.create(body:'Question',title:'title')
-    answer || = question.answers.create(body:'Answer', author:user)
-    comment || = question.comments.create(body:'Comment', author:user)
-    another_answer || = question.answers.create(body:'Question', author:user)
+    question ||= user.questions.create(body:'Question',title:'title')
+    answer ||= question.answers.create(body:'Answer', author:user)
+    comment ||= question.comments.create(body:'Comment', author:user)
+    another_answer ||= question.answers.create(body:'Question', author:user)
   end
   scenario 'User searches for the answer', sphinx: true, js:true do
     visit search_new_path
@@ -69,8 +69,6 @@ feature 'User can search for answer', "
       expect(page).to have_content 'Question'
     end
    #User.destroy_all
-   RSpec.configure do |config|
-     config.use_transactional_fixtures = true
-   end
+   
   end
 end

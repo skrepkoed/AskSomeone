@@ -120,6 +120,10 @@ GEM
     concurrent-ruby (1.1.8)
     connection_pool (2.2.5)
     crass (1.0.6)
+    database_cleaner-active_record (2.0.1)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     diff-lcs (1.4.4)
     doorkeeper (5.5.1)
       railties (>= 5)
@@ -387,6 +391,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   capybara-email
   cocoon
+  database_cleaner-active_record
   devise!
   doorkeeper
   dotenv-rails

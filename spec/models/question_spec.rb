@@ -28,7 +28,7 @@ RSpec.describe Question, type: :model do
     let!(:questions){create_list :question, 3} 
     it 'reutrns questions created today' do
       questions.last.update(created_at:Time.now-1.day)
-      expect(Question.today_questions.count).to eq Question.where(created_at: Time.today)  
+      expect(Question.today_questions.count).to eq 2 
     end 
   end
 
