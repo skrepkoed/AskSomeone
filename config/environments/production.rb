@@ -61,6 +61,16 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "AskSomeone_production"
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = {host: '188.68.221.224'}
+  config.action_mailer.smtp_settings = {
+
+    address: 'smtp.gmail.com',
+    port: 587,
+    user_name: Rails.application.credentials.gmail[:smtp_username],
+    password: Rails.application.credentials.gmail[:smtp_password],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
