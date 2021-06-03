@@ -7,7 +7,7 @@ ul.questions
   -if !@questions.empty?
     - @questions.each do |question|
     	li
-    	  p = question.title
+    	  p = link_to question.title, question_path(question)
     	  p = question.body
   -else
     li Questions empty

@@ -1,0 +1,24 @@
+[Unit]
+Description=sidekiq for AskSomeone (production)
+After=syslog.target network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/deployer/asksomeone/current
+ExecStart=~/.rvm/bin/rvm default do bundle exec sidekiq -e production
+ExecReload=/bin/kill -TSTP $MAINPID
+ExecStop=/bin/kill -TERM $MAINPID
+StandardOutput=append:/home/deployer/asksomeone/shared/log/sidekiq.log
+StandardError=append:/home/deployer/asksomeone/shared/log/sidekiq.error.log
+
+
+
+
+
+RestartSec=1
+Restart=on-failure
+
+SyslogIdentifier=sidekiq
+
+[Install]
+WantedBy=default.target
