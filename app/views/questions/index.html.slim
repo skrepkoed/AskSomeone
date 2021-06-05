@@ -4,10 +4,11 @@ p
 	= link_to 'Ask question', new_question_path
 
 ul.questions
-  -if !@questions.empty?
-    - @questions.each do |question|
-    	li
-    	  p = link_to question.title, question_path(question)
-    	  p = question.body
-  -else
-    li Questions empty
+  - cache collection_cache_helper_for(:question) 
+    -if !@questions.empty?
+      - @questions.each do |question|
+      	li
+      	  p = link_to question.title, question_path(question)
+      	  p = question.body
+    -else
+      li Questions empty

@@ -1,5 +1,6 @@
 - comments.each do |comment|
-  li.comment id="comment-#{comment.id}"
-    = "Author: #{comment.author.email}" 
-    br
-    = comment.body
+  - cache comment do 
+    li.comment id="comment-#{comment.id}"
+      = "Author: #{comment.author.email}" 
+      br
+      = comment.body
