@@ -1,19 +1,20 @@
-= form_with model: question  do |question|
-  p
-    = question.label :title
-    = question.text_field :title
-  p
-    = question.label :body
-    = question.text_area :body
-  #links
-    = question.fields_for :links do |link|
-      = render 'shared/link_fields', f: link
-    .links
-      = link_to_add_association 'Add link', question, :links, partial: 'shared/link_fields'
-  #achievement
-    = question.fields_for :achievement do |achievement|
-      = render '/questions/achievement_fields', f: achievement
-  p
-    = question.label :files
-    = question.file_field :files, multiple: true, direct_upload: true
-  = question.submit 'Ask question'
+- cache question do 
+  = form_with model: question  do |question|
+    p
+      = question.label :title
+      = question.text_field :title
+    p
+      = question.label :body
+      = question.text_area :body
+    #links
+      = question.fields_for :links do |link|
+        = render 'shared/link_fields', f: link
+      .links
+        = link_to_add_association 'Add link', question, :links, partial: 'shared/link_fields'
+    #achievement
+      = question.fields_for :achievement do |achievement|
+        = render '/questions/achievement_fields', f: achievement
+    p
+      = question.label :files
+      = question.file_field :files, multiple: true, direct_upload: true
+    = question.submit 'Ask question'

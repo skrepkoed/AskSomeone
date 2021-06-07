@@ -1,58 +1,59 @@
-div.question id="question-#{question.id}"
-  h2
-    = question.title
-  p  
-    = "Author: #{question.author.email}"
-  p
-    = question.body
-  p
-    ul.question-links
-      - question.links.each do |link|
-        -if link.gist?
-          li.gist-link
-            = javascript_include_tag link.url+".js"
-        -else
-          li
-            = link_to link.name, url_for(link.url), target: "_blank"
-  -if question.achievement
-    p.achievement
-      = question.achievement.name
-      br
-      = question.achievement.description
-      br
-      -if question.achievement.file.attached?
-        = image_tag url_for(question.achievement.file), size:"250x150"
-  - if current_user&.author?(question)  
-    -if question.files.attached?
-      - question.files.each do |file|
-        p id="attachment-id-#{file.id}"
-          = link_to file.filename.to_s, url_for(file)
-          = link_to 'Delete attachment', question_attachment_path(question, file), method: :delete, remote: true
-  p.rating
-    = "Rating: #{@question.rating.rating}"
-    p.rating-message
-  br
-
-  - if can? :create, Subscription 
-    - if current_user.subscribed?(question)
-      = link_to 'Unsubscribe', question_subscription_path(question, current_user.subscription(question)), class: 'subscription', method: :delete, remote: true
-    -else
-      = link_to 'Subscribe', question_subscriptions_path(question), class: 'subscription', method: :post, remote: true
-  br
-  - if can? :vote, @question.rating
-    = link_to "#{ @question.rating.voted?(current_user,1) || "Vote pro" }", question_pro_path(@question, @question.rating), class: 'rating-link rating-link-pro', method: :post, data:{type: :json}, remote: true
+- cache question do
+  div.question id="question-#{question.id}"
+    h2
+      = question.title
+    p  
+      = "Author: #{question.author.email}"
+    p
+      = question.body
+    p
+      ul.question-links
+        - question.links.each do |link|
+          -if link.gist?
+            li.gist-link
+              = javascript_include_tag link.url+".js"
+          -else
+            li
+              = link_to link.name, url_for(link.url), target: "_blank"
+    -if question.achievement
+      p.achievement
+        = question.achievement.name
+        br
+        = question.achievement.description
+        br
+        -if question.achievement.file.attached?
+          = image_tag url_for(question.achievement.file), size:"250x150"
+    - if current_user&.author?(question)  
+      -if question.files.attached?
+        - question.files.each do |file|
+          p id="attachment-id-#{file.id}"
+            = link_to file.filename.to_s, url_for(file)
+            = link_to 'Delete attachment', question_attachment_path(question, file), method: :delete, remote: true
+    p.rating
+      = "Rating: #{@question.rating.rating}"
+      p.rating-message
     br
-    = link_to "#{ @question.rating.voted?(current_user,-1) || "Vote con" }", question_con_path(@question, @question.rating), class: 'rating-link rating-link-con', method: :post, data:{type: :json}, remote: true
 
-  p
-    - if can? :update, @question 
-      = link_to 'Delete question', question_path(question), method: :delete
+    - if can? :create, Subscription 
+      - if current_user.subscribed?(question)
+        = link_to 'Unsubscribe', question_subscription_path(question, current_user.subscription(question)), class: 'subscription', method: :delete, remote: true
+      -else
+        = link_to 'Subscribe', question_subscriptions_path(question), class: 'subscription', method: :post, remote: true
+    br
+    - if can? :vote, @question.rating
+      = link_to "#{ @question.rating.voted?(current_user,1) || "Vote pro" }", question_pro_path(@question, @question.rating), class: 'rating-link rating-link-pro', method: :post, data:{type: :json}, remote: true
       br
-      = link_to 'Edit question','#', class: 'edit-question-link', data: { question_id: question.id }
-  div.question_edit_hidden
-    = render 'question_form', question:question
-  br
-  div.comments_container
-    ul.comments
-      = render '/shared/comment', comments: question.comments
-    = render '/shared/comment_form', resource:question, comment: question.comments.new
+      = link_to "#{ @question.rating.voted?(current_user,-1) || "Vote con" }", question_con_path(@question, @question.rating), class: 'rating-link rating-link-con', method: :post, data:{type: :json}, remote: true
+
+    p
+      - if can? :update, @question 
+        = link_to 'Delete question', question_path(question), method: :delete
+        br
+        = link_to 'Edit question','#', class: 'edit-question-link', data: { question_id: question.id }
+    div.question_edit_hidden
+      = render 'question_form', question:question
+    br
+    div.comments_container
+      ul.comments
+        = render '/shared/comment', comments: question.comments
+      = render '/shared/comment_form', resource:question, comment: question.comments.new
